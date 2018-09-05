@@ -125,12 +125,13 @@ PUBLIC int get_ticks()
  *======================================================================*/
 void TestA()
 {
-	int maxGet = 10;
+	int maxGet = -1;
 	for(int i=0;i<maxGet;i++)
 	{
 		printf("<Ticks:%d>", get_ticks());
 		milli_delay(200);
 	}
+	printf("--- Welcome to Poi OS ---");
 	spin("A");
 }
 

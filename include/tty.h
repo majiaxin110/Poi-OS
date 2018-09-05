@@ -21,11 +21,6 @@ typedef struct s_tty
 	u32*	p_inbuf_tail;		/* 指向键盘任务应处理的键值 */
 	int	inbuf_count;		/* 缓冲区中已经填充了多少 */
 
-	u32 in_order[TTY_IN_BYTES];
-	u32*	p_inorder_head;		
-	u32*	p_inorder_tail;		
-	int	inorder_count;		
-
 	char currentInput[STR_DEFAULT_LEN];	//当前实际正在输入的命令
 	struct s_console *	p_console;
 }TTY;

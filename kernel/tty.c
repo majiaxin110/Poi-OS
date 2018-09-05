@@ -56,9 +56,6 @@ PRIVATE void init_tty(TTY* p_tty)
 	p_tty->inbuf_count = 0;
 	p_tty->p_inbuf_head = p_tty->p_inbuf_tail = p_tty->in_buf;
 
-	p_tty->inorder_count = 0;
-	p_tty->p_inorder_head = p_tty->p_inorder_tail = p_tty->in_order;
-	
 	strcpy(p_tty->currentInput,"");
 
 	init_screen(p_tty);
