@@ -14,7 +14,7 @@
 #include "console.h"
 #include "global.h"
 #include "proto.h"
-
+#include "shell.h"
 
 /*======================================================================*
                             kernel_main
@@ -131,7 +131,7 @@ void TestA()
 		printf("<Ticks:%d>", get_ticks());
 		milli_delay(200);
 	}
-	printf("--- Welcome to Poi OS ---");
+	
 	spin("A");
 }
 

@@ -57,6 +57,8 @@ PUBLIC void init_screen(TTY* p_tty)
 	set_cursor(p_tty->p_console->cursor);
 
 	memset(p_tty->p_console->currentIn,'\0',STR_DEFAULT_LEN);
+
+	
 }
 
 
@@ -172,6 +174,7 @@ PUBLIC void select_console(int nr_console)	/* 0 ~ (NR_CONSOLES - 1) */
 	nr_current_console = nr_console;
 
 	flush(&console_table[nr_console]);
+
 }
 
 /*======================================================================*
@@ -203,3 +206,14 @@ PUBLIC void scroll_screen(CONSOLE* p_con, int direction)
 	flush(p_con);
 }
 
+PUBLIC void clear_init_screen(CONSOLE* p_con)
+{
+	for(int i=0;i<19;i++)
+		scroll_screen(p_con,SCR_DN);
+}
+
+PUBLIC void clear_screen(CONSOLE* p_con)
+{
+	for(int i=0;i<25;i++)
+		scroll_screen(p_con,SCR_DN);
+}

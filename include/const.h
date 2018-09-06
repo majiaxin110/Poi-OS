@@ -156,7 +156,14 @@ enum msgtype {
 
 #define	RETVAL		u.m3.m3i1
 
+//以下为Poi OS 原创内容
 #define INSSM		u.m3.m3p1
 #define INTTY		u.m3.m3p2
 
+//内置命令请放在这里
+#define GIRL "mostlovelygirl\0"
+#define HELP "help\0"
+
+//SHELL传递给TTY要做的事情
+#define TTY_DO_CLEAR -1
 #endif /* _ORANGES_CONST_H_ */

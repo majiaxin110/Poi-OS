@@ -9,6 +9,8 @@ PUBLIC	void*	memcpy(void* p_dst, void* p_src, int size);
 PUBLIC	void	memset(void* p_dst, char ch, int size);
 PUBLIC	int	strlen(char* p_str);
 
+//比较两字符串是否相等
+PUBLIC int strcmp(char* str1,char* str2);
 /**
  * `phys_copy' and `phys_set' are used only in the kernel, where segments
  * are all flat (based on 0). In the meanwhile, currently linear address

@@ -590,3 +590,19 @@ PUBLIC void dump_msg(const char * title, MESSAGE* m)
 		);
 }
 
+//以下为Poi OS 原创函数
+
+//比较两字符串是否相等
+PUBLIC int strcmp(char* str1,char* str2)
+{
+	int length1 = strlen(str1);
+	int length2 = strlen(str2);
+	if(length1 != length2)
+		return 0;	
+	for(int i=0;i<strlen(str1);i++)
+	{
+		if(str1[i] != str2[i])
+			return 0;	
+	}
+	return 1;
+}

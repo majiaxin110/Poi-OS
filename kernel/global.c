@@ -11,6 +11,7 @@
 #include "const.h"
 #include "protect.h"
 #include "tty.h"
+#include "shell.h"
 #include "console.h"
 #include "proc.h"
 #include "global.h"

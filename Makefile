@@ -28,7 +28,7 @@ ORANGESKERNEL	= kernel.bin
 OBJS		= kernel/kernel.o kernel/syscall.o kernel/start.o kernel/main.o\
 			kernel/clock.o kernel/keyboard.o kernel/tty.o kernel/console.o\
 			kernel/i8259.o kernel/global.o kernel/protect.o kernel/proc.o\
-			kernel/systask.o\
+			kernel/systask.o kernel/shell.o\
 			kernel/printf.o kernel/vsprintf.o\
 			lib/kliba.o lib/klib.o lib/string.o lib/misc.o
 DASMOUTPUT	= kernel.bin.asm
@@ -62,7 +62,7 @@ buildimg :
 	sudo cp -fv boot/loader.bin /mnt/floppy/
 	sudo cp -fv kernel.bin /mnt/floppy
 	sudo umount /mnt/floppy
-
+	bochs -f bochsrc
 boot/boot.bin : boot/boot.asm boot/include/load.inc boot/include/fat12hdr.inc
 	$(ASM) $(ASMBFLAGS) -o $@ $<
 
@@ -83,7 +83,7 @@ kernel/start.o: kernel/start.c include/type.h include/const.h include/protect.h 
 	$(CC) $(CFLAGS) -o $@ $<
 
 kernel/main.o: kernel/main.c include/type.h include/const.h include/protect.h include/string.h include/proc.h include/proto.h \
-			include/global.h
+			include/global.h 
 	$(CC) $(CFLAGS) -o $@ $<
 
 kernel/clock.o: kernel/clock.c
@@ -93,6 +93,9 @@ kernel/keyboard.o: kernel/keyboard.c
 	$(CC) $(CFLAGS) -o $@ $<
 
 kernel/tty.o: kernel/tty.c
+	$(CC) $(CFLAGS) -o $@ $<
+
+kernel/shell.o: kernel/shell.c
 	$(CC) $(CFLAGS) -o $@ $<
 
 kernel/console.o: kernel/console.c

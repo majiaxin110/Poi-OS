@@ -53,7 +53,7 @@ PUBLIC void keyboard_read(TTY* p_tty);
 
 /* tty.c */
 PUBLIC void task_tty();
-PUBLIC void task_shell();//shell 暂时先放在这里
+PUBLIC void task_shell();
 PUBLIC void in_process(TTY* p_tty, u32 key);
 
 /* systask.c */
@@ -62,6 +62,7 @@ PUBLIC void task_sys();
 /* console.c */
 PUBLIC void out_char(CONSOLE* p_con, char ch);
 PUBLIC void scroll_screen(CONSOLE* p_con, int direction);
+PUBLIC void clear_screen(CONSOLE* p_con);
 PUBLIC void select_console(int nr_console);
 PUBLIC void init_screen(TTY* p_tty);
 PUBLIC int  is_current_console(CONSOLE* p_con);

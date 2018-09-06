@@ -5,8 +5,8 @@
 						    Forrest Yu, 2005
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
-#ifndef _ORANGES_CONSOLE_H_
-#define _ORANGES_CONSOLE_H_
+#ifndef _POI_CONSOLE_H_
+#define _POI_CONSOLE_H_
 
 
 /* CONSOLE */
