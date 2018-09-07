@@ -39,6 +39,8 @@ PUBLIC int kernel_main()
                         rpl       = RPL_TASK;
                         eflags    = 0x1202; /* IF=1, IOPL=1, bit 2 is always 1 */
 			prio      = 15;
+				if(i == 3)
+					prio = 30;
                 }
                 else {                  /* 用户进程 */
                         p_task    = user_proc_table + (i - NR_TASKS);
@@ -91,7 +93,7 @@ PUBLIC int kernel_main()
         proc_table[NR_TASKS + 0].nr_tty = 0;
         proc_table[NR_TASKS + 1].nr_tty = 1;
         proc_table[NR_TASKS + 2].nr_tty = 1;
-
+		proc_table[3].nr_tty = 2;
 
 	k_reenter = 0;
 	ticks = 0;

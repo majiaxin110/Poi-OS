@@ -24,10 +24,10 @@ PRIVATE void tty_do_read(TTY* p_tty);
 PRIVATE void tty_do_write(TTY* p_tty);
 PRIVATE void put_key(TTY* p_tty, u32 key);
 
-PUBLIC void testDel(TTY* p_tty)
+PUBLIC void testDel(CONSOLE* p_con)
 {
 	for(int i=0;i<10;i++)
-		out_char(p_tty->p_console,'\b');
+		out_char(p_con,'\b');
 }
 /*======================================================================*
                            task_tty
@@ -69,20 +69,12 @@ PRIVATE void init_tty(TTY* p_tty)
 	init_screen(p_tty);
 }
 
-/*void strcat(char* str,char ch)
+void clear_screen(CONSOLE* p_con)
 {
-	char tail[2];
-	tail[0]=ch;
-	tail[1]='\0';
-	for(int i=0;i<STR_DEFAULT_LEN;i++)
-	{
-		if(str[i]=='\0')
-		{
-			strcpy(str+strlen(str),tail);
-			return;
-		}
-	}
-}*/
+	do{
+		out_char(p_con,'\b');
+	}while(p_con->cursor > p_con->current_start_addr);
+}
 /*======================================================================*
 				in_process
  *======================================================================*/
@@ -94,7 +86,6 @@ PUBLIC void in_process(TTY* p_tty, u32 key)
         if (!(key & FLAG_EXT)) {
 			strcatch(p_tty->currentInput,&key);
 			put_key(p_tty, key);
-						
         }
         else {
                 int raw_code = key & MASK_RAW;
@@ -103,18 +94,14 @@ PUBLIC void in_process(TTY* p_tty, u32 key)
 					put_key(p_tty, '\n');
 					msg.INSSM = p_tty->currentInput;
 					msg.INTTY = p_tty;
-					msg.u.m3.m3i1 = p_tty->p_console->current_start_addr;
-					msg.u.m3.m3i2 = p_tty->p_console->original_addr;
 					send_recv(SEND,TASK_SHELL,&msg);
 					reset_msg(&msg);
 					send_recv(RECEIVE,TASK_SHELL,&msg);
 					if(msg.type == TTY_DO_CLEAR)
-					{
-						do{
-							out_char(p_tty->p_console,'\b');
-						}while(p_tty->p_console->cursor> p_tty->p_console->current_start_addr);
-							
-					}
+						clear_screen(p_tty->p_console);
+					if(msg.type == TTY_DO_INDEX)
+						select_console(0);
+					strcpy(p_tty->currentInput,"");
 					break;
                 case BACKSPACE:
 					put_key(p_tty, '\b');
@@ -133,7 +120,7 @@ PUBLIC void in_process(TTY* p_tty, u32 key)
 		case F1:
 		case F2:
 		case F3:
-		case F4:
+		/*case F4:
 		case F5:
 		case F6:
 		case F7:
@@ -141,7 +128,7 @@ PUBLIC void in_process(TTY* p_tty, u32 key)
 		case F9:
 		case F10:
 		case F11:
-		case F12:
+		case F12:*/
 			/* CTRL + F1~F12  切换终端*/
 			if ((key & FLAG_CTRL_L) || (key & FLAG_CTRL_R)) {
 				select_console(raw_code - F1);

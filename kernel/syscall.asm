@@ -14,6 +14,8 @@ _NR_sendrec	    equ 1
 ; 导出符号
 global	printx
 global	sendrec
+global 	rtcSecond
+global  disp_time
 
 bits 32
 [section .text]

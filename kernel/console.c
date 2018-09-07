@@ -2,14 +2,7 @@
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			      console.c
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-						    Forrest Yu, 2005
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-
-/*
-	回车键: 把光标移到第一列
-	换行键: 把光标前进到下一行
 */
-
 
 #include "type.h"
 #include "const.h"
@@ -56,9 +49,6 @@ PUBLIC void init_screen(TTY* p_tty)
 
 	set_cursor(p_tty->p_console->cursor);
 
-	memset(p_tty->p_console->currentIn,'\0',STR_DEFAULT_LEN);
-
-	
 }
 
 
@@ -77,7 +67,6 @@ PUBLIC int is_current_console(CONSOLE* p_con)
 PUBLIC void out_char(CONSOLE* p_con, char ch)
 {
 	u8* p_vmem = (u8*)(V_MEM_BASE + p_con->cursor * 2);
-	int originLength = strlen(p_con->currentIn);
 	switch(ch) {
 	case '\n':
 		if (p_con->cursor < p_con->original_addr +
@@ -94,11 +83,6 @@ PUBLIC void out_char(CONSOLE* p_con, char ch)
 			*(p_vmem-1) = DEFAULT_CHAR_COLOR;
 		}
 
-		//删去一个字符 by MT
-		
-		if(originLength > 0)
-			p_con->currentIn[originLength-1] = '\0';
-
 		break;
 	default:
 		if (p_con->cursor <
@@ -108,11 +92,6 @@ PUBLIC void out_char(CONSOLE* p_con, char ch)
 			p_con->cursor++;
 		}
 
-		//增加一个字符 by MT
-		//p_con->currentIn[originLength-1] = ch;
-		//p_con->currentIn[originLength] = '\0';
-		p_con->currentIn[originLength] = ch;
-		
 		break;
 	}
 
@@ -123,6 +102,27 @@ PUBLIC void out_char(CONSOLE* p_con, char ch)
 	flush(p_con);
 }
 
+PUBLIC void out_color_char(CONSOLE* p_con, char ch,int color)
+{
+	u8* p_vmem = (u8*)(V_MEM_BASE + p_con->cursor * 2);
+	if (p_con->cursor <
+		    p_con->original_addr + p_con->v_mem_limit - 1) {
+			*p_vmem++ = ch;
+			*p_vmem++ = color;
+			p_con->cursor++;
+	}
+	while (p_con->cursor >= p_con->current_start_addr + SCR_SIZE) {
+		scroll_screen(p_con, SCR_DN);
+	}
+
+	flush(p_con);
+}
+
+PUBLIC void print_color_str(CONSOLE* p_con, char* str,int color)
+{
+	for(int i=0;i<strlen(str);i++)
+		out_color_char(p_con,str[i],color);
+}
 /*======================================================================*
                            flush
 *======================================================================*/
@@ -209,11 +209,5 @@ PUBLIC void scroll_screen(CONSOLE* p_con, int direction)
 PUBLIC void clear_init_screen(CONSOLE* p_con)
 {
 	for(int i=0;i<19;i++)
-		scroll_screen(p_con,SCR_DN);
-}
-
-PUBLIC void clear_screen(CONSOLE* p_con)
-{
-	for(int i=0;i<25;i++)
 		scroll_screen(p_con,SCR_DN);
 }

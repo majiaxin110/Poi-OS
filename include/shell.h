@@ -9,6 +9,7 @@ typedef struct shell_storage
     char currentOrder[STR_DEFAULT_LEN];
     char allOrder[NR_ORDERS][STR_DEFAULT_LEN];
 
+    TTY* tty;
     int ifError;//上条指令是否有错误
 }SHELLINFO;
 
