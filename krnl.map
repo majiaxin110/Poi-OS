@@ -221,7 +221,7 @@ LOAD lib/misc.o
 .plt.sec
  *(.plt.sec)
 
-.text           0x0000000000030400     0x496b
+.text           0x0000000000030400     0x4e9b
  *(.text.unlikely .text.*_unlikely .text.unlikely.*)
  *(.text.exit .text.exit.*)
  *(.text.startup .text.startup.*)
@@ -328,42 +328,42 @@ LOAD lib/misc.o
                 0x0000000000034255                __x86.get_pc_thunk.dx
  .text          0x0000000000034259       0x69 kernel/systask.o
                 0x0000000000034259                task_sys
- .text          0x00000000000342c2      0x365 kernel/shell.o
+ .text          0x00000000000342c2      0x895 kernel/shell.o
                 0x00000000000342c2                print_welcome
-                0x00000000000343c5                divideOrder
-                0x0000000000034440                task_shell
- .text          0x0000000000034627       0x5f kernel/printf.o
-                0x0000000000034627                printf
- .text          0x0000000000034686      0x330 kernel/vsprintf.o
-                0x00000000000346f6                vsprintf
-                0x0000000000034986                sprintf
- *fill*         0x00000000000349b6        0xa 
- .text          0x00000000000349c0       0xf3 lib/kliba.o
-                0x00000000000349c0                disp_str
-                0x0000000000034a06                disp_color_str
-                0x0000000000034a45                out_byte
-                0x0000000000034a51                in_byte
-                0x0000000000034a5b                disable_irq
-                0x0000000000034a90                enable_irq
-                0x0000000000034aaf                disable_int
-                0x0000000000034ab1                enable_int
- .text          0x0000000000034ab3      0x13c lib/klib.o
-                0x0000000000034ab3                itoa
-                0x0000000000034b68                disp_int
-                0x0000000000034b9e                delay
- *fill*         0x0000000000034bef        0x1 
- .text          0x0000000000034bf0       0xdb lib/string.o
-                0x0000000000034bf0                memcpy
-                0x0000000000034c19                memset
-                0x0000000000034c3a                strcpy
-                0x0000000000034c52                strcatch
-                0x0000000000034c76                strcat
-                0x0000000000034c9a                strdel
-                0x0000000000034cb5                strlen
- .text          0x0000000000034ccb       0xa0 lib/misc.o
-                0x0000000000034ccb                spin
-                0x0000000000034cf5                spinProc
-                0x0000000000034d1f                assertion_failure
+                0x0000000000034377                divideOrder
+                0x0000000000034a13                task_shell
+ .text          0x0000000000034b57       0x5f kernel/printf.o
+                0x0000000000034b57                printf
+ .text          0x0000000000034bb6      0x330 kernel/vsprintf.o
+                0x0000000000034c26                vsprintf
+                0x0000000000034eb6                sprintf
+ *fill*         0x0000000000034ee6        0xa 
+ .text          0x0000000000034ef0       0xf3 lib/kliba.o
+                0x0000000000034ef0                disp_str
+                0x0000000000034f36                disp_color_str
+                0x0000000000034f75                out_byte
+                0x0000000000034f81                in_byte
+                0x0000000000034f8b                disable_irq
+                0x0000000000034fc0                enable_irq
+                0x0000000000034fdf                disable_int
+                0x0000000000034fe1                enable_int
+ .text          0x0000000000034fe3      0x13c lib/klib.o
+                0x0000000000034fe3                itoa
+                0x0000000000035098                disp_int
+                0x00000000000350ce                delay
+ *fill*         0x000000000003511f        0x1 
+ .text          0x0000000000035120       0xdb lib/string.o
+                0x0000000000035120                memcpy
+                0x0000000000035149                memset
+                0x000000000003516a                strcpy
+                0x0000000000035182                strcatch
+                0x00000000000351a6                strcat
+                0x00000000000351ca                strdel
+                0x00000000000351e5                strlen
+ .text          0x00000000000351fb       0xa0 lib/misc.o
+                0x00000000000351fb                spin
+                0x0000000000035225                spinProc
+                0x000000000003524f                assertion_failure
  *(.gnu.warning)
 
 .fini
@@ -372,22 +372,22 @@ LOAD lib/misc.o
                 [!provide]                        PROVIDE (_etext = .)
                 [!provide]                        PROVIDE (etext = .)
 
-.rodata         0x0000000000034d80      0xf01
+.rodata         0x00000000000352a0     0x1001
  *(.rodata .rodata.* .gnu.linkonce.r.*)
- .rodata        0x0000000000034d80       0x47 kernel/start.o
- *fill*         0x0000000000034dc7        0x1 
- .rodata        0x0000000000034dc8       0x41 kernel/main.o
- *fill*         0x0000000000034e09        0x3 
- .rodata        0x0000000000034e0c       0x64 kernel/keyboard.o
- .rodata        0x0000000000034e70       0x94 kernel/tty.o
- .rodata        0x0000000000034f04       0x11 kernel/i8259.o
- *fill*         0x0000000000034f15        0xb 
- .rodata        0x0000000000034f20      0x540 kernel/protect.o
- .rodata        0x0000000000035460      0x5fe kernel/proc.o
- .rodata        0x0000000000035a5e       0x11 kernel/systask.o
- *fill*         0x0000000000035a6f        0x1 
- .rodata        0x0000000000035a70      0x194 kernel/shell.o
- .rodata        0x0000000000035c04       0x7d lib/misc.o
+ .rodata        0x00000000000352a0       0x47 kernel/start.o
+ *fill*         0x00000000000352e7        0x1 
+ .rodata        0x00000000000352e8       0x41 kernel/main.o
+ *fill*         0x0000000000035329        0x3 
+ .rodata        0x000000000003532c       0x64 kernel/keyboard.o
+ .rodata        0x0000000000035390       0x94 kernel/tty.o
+ .rodata        0x0000000000035424       0x11 kernel/i8259.o
+ *fill*         0x0000000000035435        0xb 
+ .rodata        0x0000000000035440      0x540 kernel/protect.o
+ .rodata        0x0000000000035980      0x5fe kernel/proc.o
+ .rodata        0x0000000000035f7e       0x11 kernel/systask.o
+ *fill*         0x0000000000035f8f        0x1 
+ .rodata        0x0000000000035f90      0x294 kernel/shell.o
+ .rodata        0x0000000000036224       0x7d lib/misc.o
 
 .rodata1
  *(.rodata1)
@@ -396,36 +396,36 @@ LOAD lib/misc.o
  *(.eh_frame_hdr)
  *(.eh_frame_entry .eh_frame_entry.*)
 
-.eh_frame       0x0000000000035c84      0xa2c
+.eh_frame       0x00000000000362a4      0xabc
  *(.eh_frame)
- .eh_frame      0x0000000000035c84       0x50 kernel/start.o
- .eh_frame      0x0000000000035cd4       0xdc kernel/main.o
+ .eh_frame      0x00000000000362a4       0x50 kernel/start.o
+ .eh_frame      0x00000000000362f4       0xdc kernel/main.o
                                         0x108 (松开之前的大小)
- .eh_frame      0x0000000000035db0       0x6c kernel/clock.o
+ .eh_frame      0x00000000000363d0       0x6c kernel/clock.o
                                          0xac (松开之前的大小)
- .eh_frame      0x0000000000035e1c       0xfc kernel/keyboard.o
+ .eh_frame      0x000000000003643c       0xfc kernel/keyboard.o
                                         0x128 (松开之前的大小)
- .eh_frame      0x0000000000035f18      0x138 kernel/tty.o
+ .eh_frame      0x0000000000036538      0x138 kernel/tty.o
                                         0x178 (松开之前的大小)
- .eh_frame      0x0000000000036050      0x150 kernel/console.o
+ .eh_frame      0x0000000000036670      0x150 kernel/console.o
                                         0x190 (松开之前的大小)
- .eh_frame      0x00000000000361a0       0x6c kernel/i8259.o
+ .eh_frame      0x00000000000367c0       0x6c kernel/i8259.o
                                          0x98 (松开之前的大小)
- .eh_frame      0x000000000003620c       0xb8 kernel/protect.o
+ .eh_frame      0x000000000003682c       0xb8 kernel/protect.o
                                          0xf8 (松开之前的大小)
- .eh_frame      0x00000000000362c4      0x220 kernel/proc.o
+ .eh_frame      0x00000000000368e4      0x220 kernel/proc.o
                                         0x260 (松开之前的大小)
- .eh_frame      0x00000000000364e4       0x1c kernel/systask.o
+ .eh_frame      0x0000000000036b04       0x1c kernel/systask.o
                                          0x48 (松开之前的大小)
- .eh_frame      0x0000000000036500       0x64 kernel/shell.o
-                                         0xa4 (松开之前的大小)
- .eh_frame      0x0000000000036564       0x24 kernel/printf.o
+ .eh_frame      0x0000000000036b20       0xf4 kernel/shell.o
+                                        0x134 (松开之前的大小)
+ .eh_frame      0x0000000000036c14       0x24 kernel/printf.o
                                          0x50 (松开之前的大小)
- .eh_frame      0x0000000000036588       0x68 kernel/vsprintf.o
+ .eh_frame      0x0000000000036c38       0x68 kernel/vsprintf.o
                                          0xa8 (松开之前的大小)
- .eh_frame      0x00000000000365f0       0x64 lib/klib.o
+ .eh_frame      0x0000000000036ca0       0x64 lib/klib.o
                                          0xa4 (松开之前的大小)
- .eh_frame      0x0000000000036654       0x5c lib/misc.o
+ .eh_frame      0x0000000000036d04       0x5c lib/misc.o
                                          0x9c (松开之前的大小)
  *(.eh_frame.*)
 
