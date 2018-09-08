@@ -235,7 +235,11 @@ LOAD lib/misc.o
 .plt.sec
  *(.plt.sec)
 
+<<<<<<< HEAD
 .text           0x0000000000030400     0x694b
+=======
+.text           0x0000000000030400     0x699b
+>>>>>>> master
  *(.text.unlikely .text.*_unlikely .text.unlikely.*)
  *(.text.exit .text.exit.*)
  *(.text.startup .text.startup.*)
@@ -351,6 +355,7 @@ LOAD lib/misc.o
                 0x00000000000343d1                task_sys
  .text          0x000000000003443a     0x10c2 kernel/shell.o
                 0x00000000000344bd                print_welcome
+<<<<<<< HEAD
                 0x000000000003531c                task_shell
  .text          0x00000000000354fc     0x10c1 kernel/game.o
                 0x00000000000354fc                doRand
@@ -393,6 +398,51 @@ LOAD lib/misc.o
                 0x0000000000036cab                spin
                 0x0000000000036cd5                spinProc
                 0x0000000000036cff                assertion_failure
+=======
+                0x000000000003533f                task_shell
+ .text          0x000000000003551f     0x10e6 kernel/game.o
+                0x000000000003551f                doRand
+                0x0000000000035fe2                Gpow
+                0x0000000000036186                Gticks
+                0x0000000000036539                get_game_ticks
+                0x000000000003656e                task_tick
+ .text.__x86.get_pc_thunk.si
+                0x0000000000036605        0x4 kernel/game.o
+                0x0000000000036605                __x86.get_pc_thunk.si
+ .text          0x0000000000036609       0x5f kernel/printf.o
+                0x0000000000036609                printf
+ .text          0x0000000000036668      0x330 kernel/vsprintf.o
+                0x00000000000366d8                vsprintf
+                0x0000000000036968                sprintf
+ *fill*         0x0000000000036998        0x8 
+ .text          0x00000000000369a0      0x141 lib/kliba.o
+                0x00000000000369a0                disp_str
+                0x00000000000369e6                disp_color_str
+                0x0000000000036a25                out_byte
+                0x0000000000036a31                in_byte
+                0x0000000000036a3b                disable_irq
+                0x0000000000036a70                enable_irq
+                0x0000000000036a8f                disable_int
+                0x0000000000036a91                enable_int
+                0x0000000000036a93                generate_music
+ .text          0x0000000000036ae1      0x13c lib/klib.o
+                0x0000000000036ae1                itoa
+                0x0000000000036b96                disp_int
+                0x0000000000036bcc                delay
+ *fill*         0x0000000000036c1d        0x3 
+ .text          0x0000000000036c20       0xdb lib/string.o
+                0x0000000000036c20                memcpy
+                0x0000000000036c49                memset
+                0x0000000000036c6a                strcpy
+                0x0000000000036c82                strcatch
+                0x0000000000036ca6                strcat
+                0x0000000000036cca                strdel
+                0x0000000000036ce5                strlen
+ .text          0x0000000000036cfb       0xa0 lib/misc.o
+                0x0000000000036cfb                spin
+                0x0000000000036d25                spinProc
+                0x0000000000036d4f                assertion_failure
+>>>>>>> master
  *(.gnu.warning)
 
 .fini
@@ -401,6 +451,7 @@ LOAD lib/misc.o
                 [!provide]                        PROVIDE (_etext = .)
                 [!provide]                        PROVIDE (etext = .)
 
+<<<<<<< HEAD
 .rodata         0x0000000000036d60     0x1329
  *(.rodata .rodata.* .gnu.linkonce.r.*)
  .rodata        0x0000000000036d60       0x47 kernel/start.o
@@ -419,6 +470,26 @@ LOAD lib/misc.o
  .rodata        0x0000000000037eb4      0x157 kernel/game.o
  *fill*         0x000000000003800b        0x1 
  .rodata        0x000000000003800c       0x7d lib/misc.o
+=======
+.rodata         0x0000000000036da0     0x1375
+ *(.rodata .rodata.* .gnu.linkonce.r.*)
+ .rodata        0x0000000000036da0       0x47 kernel/start.o
+ *fill*         0x0000000000036de7        0x1 
+ .rodata        0x0000000000036de8       0x45 kernel/main.o
+ *fill*         0x0000000000036e2d        0x3 
+ .rodata        0x0000000000036e30       0x64 kernel/keyboard.o
+ .rodata        0x0000000000036e94       0x94 kernel/tty.o
+ .rodata        0x0000000000036f28       0x11 kernel/i8259.o
+ *fill*         0x0000000000036f39        0x7 
+ .rodata        0x0000000000036f40      0x540 kernel/protect.o
+ .rodata        0x0000000000037480      0x5fe kernel/proc.o
+ .rodata        0x0000000000037a7e       0x11 kernel/systask.o
+ *fill*         0x0000000000037a8f        0x1 
+ .rodata        0x0000000000037a90      0x4b0 kernel/shell.o
+ .rodata        0x0000000000037f40      0x157 kernel/game.o
+ *fill*         0x0000000000038097        0x1 
+ .rodata        0x0000000000038098       0x7d lib/misc.o
+>>>>>>> master
 
 .rodata1
  *(.rodata1)
@@ -427,6 +498,7 @@ LOAD lib/misc.o
  *(.eh_frame_hdr)
  *(.eh_frame_entry .eh_frame_entry.*)
 
+<<<<<<< HEAD
 .eh_frame       0x000000000003808c      0xc98
  *(.eh_frame)
  .eh_frame      0x000000000003808c       0x50 kernel/start.o
@@ -460,6 +532,41 @@ LOAD lib/misc.o
                                          0xa4 (松开之前的大小)
  .eh_frame      0x0000000000038cc8       0x5c lib/misc.o
                                          0x9c (松开之前的大小)
+=======
+.eh_frame       0x0000000000038118      0xc98
+ *(.eh_frame)
+ .eh_frame      0x0000000000038118       0x50 kernel/start.o
+ .eh_frame      0x0000000000038168       0xdc kernel/main.o
+                                        0x108 (size before relaxing)
+ .eh_frame      0x0000000000038244       0x6c kernel/clock.o
+                                         0xac (size before relaxing)
+ .eh_frame      0x00000000000382b0       0xfc kernel/keyboard.o
+                                        0x128 (size before relaxing)
+ .eh_frame      0x00000000000383ac      0x15c kernel/tty.o
+                                        0x19c (size before relaxing)
+ .eh_frame      0x0000000000038508      0x184 kernel/console.o
+                                        0x1c4 (size before relaxing)
+ .eh_frame      0x000000000003868c       0x6c kernel/i8259.o
+                                         0x98 (size before relaxing)
+ .eh_frame      0x00000000000386f8       0xb8 kernel/protect.o
+                                         0xf8 (size before relaxing)
+ .eh_frame      0x00000000000387b0      0x244 kernel/proc.o
+                                        0x284 (size before relaxing)
+ .eh_frame      0x00000000000389f4       0x1c kernel/systask.o
+                                         0x48 (size before relaxing)
+ .eh_frame      0x0000000000038a10      0x11c kernel/shell.o
+                                        0x15c (size before relaxing)
+ .eh_frame      0x0000000000038b2c      0x138 kernel/game.o
+                                        0x18c (size before relaxing)
+ .eh_frame      0x0000000000038c64       0x24 kernel/printf.o
+                                         0x50 (size before relaxing)
+ .eh_frame      0x0000000000038c88       0x68 kernel/vsprintf.o
+                                         0xa8 (size before relaxing)
+ .eh_frame      0x0000000000038cf0       0x64 lib/klib.o
+                                         0xa4 (size before relaxing)
+ .eh_frame      0x0000000000038d54       0x5c lib/misc.o
+                                         0x9c (size before relaxing)
+>>>>>>> master
  *(.eh_frame.*)
 
 .gcc_except_table

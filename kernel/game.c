@@ -195,7 +195,7 @@ PUBLIC void Gpow()
 
 PUBLIC void Gticks()
 {
-    
+    int gameover_flag = 0;
     int best_score = 5000;
     GDATA data;
     data.p_con = &(console_table[1]);
@@ -231,6 +231,9 @@ PUBLIC void Gticks()
 				send_recv(SEND,TASK_TICKS,&msg);      //process to print ticks
             }
             else{
+                if(gameover_flag == 1){
+                    continue;
+                }
                 print = 0;
                 int gap = get_game_ticks()-preticks-1000;
                 if(gap<0){
@@ -246,6 +249,7 @@ PUBLIC void Gticks()
                 printf("Best score is %d\n", best_score);
                 print_color_str(data.p_con,"Press 'r' to Restart.",RED_CHAR);
                 printf("\n");
+                gameover_flag = 1;
             }
         }
         if(msg.RETVAL == GDOWN)
@@ -260,6 +264,7 @@ PUBLIC void Gticks()
             printf("\n");
             print_color_str(data.p_con,"GoodLuck!.",YELLOW_CHAR);
             printf("\n");
+            gameover_flag = 0;
             preticks = -1;
         }
     }
