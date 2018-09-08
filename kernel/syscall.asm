@@ -10,10 +10,12 @@
 INT_VECTOR_SYS_CALL equ 0x90
 _NR_printx	    equ 0
 _NR_sendrec	    equ 1
+_NR_getSecond 	equ 2
 
 ; 导出符号
 global	printx
 global	sendrec
+global 	rtcSecond
 
 bits 32
 [section .text]
@@ -39,3 +41,7 @@ printx:
 	int	INT_VECTOR_SYS_CALL
 	ret
 
+rtcSecond:
+	mov eax,_NR_getSecond
+	int INT_VECTOR_SYS_CALL
+	ret

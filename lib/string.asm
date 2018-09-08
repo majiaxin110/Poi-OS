@@ -12,8 +12,9 @@ global	memcpy
 global	memset
 global  strcpy
 global  strlen
+global	strcatch
 global	strcat
-
+global	strdel
 
 ; ------------------------------------------------------------------------
 ; void* memcpy(void* es:p_dst, void* ds:p_src, int size);
@@ -116,9 +117,9 @@ strcpy:
 ; strcpy 结束-------------------------------------------------------------
 
 ;---------------------
-;char* strcat(char* p_dst, char* ch)
+;char* strcatch(char* p_dst, char* ch)
 ;---------------------
-strcat:
+strcatch:
 
 	push    ebp
 	mov     ebp, esp
@@ -148,7 +149,67 @@ strcat:
 	pop     ebp
 	ret                     ; 函数结束，返回
 
+;---------------------
+;char* strcat(char* dest, char* sour)
+;---------------------
+strcat:
 
+	push    ebp
+	mov     ebp, esp
+
+	mov     esi, [ebp + 12] ; Source
+	mov     edi, [ebp + 8]  ; Destination
+
+	cmp		byte [edi],0
+	je 		.2
+.1:
+	inc		edi
+	mov		al, [edi]
+	cmp		al, 0
+	jnz		.1
+.2:
+	mov     al, [esi]               ; ┓
+	inc     esi                     ; ┃
+									; ┣ 逐字节移动
+	mov     byte [edi], al          ; ┃
+	inc     edi                     ; ┛
+
+	cmp		al,0
+	jnz		.2	
+	
+	mov     eax, [ebp + 8]  ; 返回值
+
+	pop     ebp
+	ret                     ; 函数结束，返回
+
+
+;---------------------
+;char* strdel(char* str)
+;---------------------
+strdel:
+
+	push    ebp
+	mov     ebp, esp
+
+	;mov     esi, [ebp + 12] ; Source
+	mov     edi, [ebp + 8]  ; goal str
+
+	cmp		byte [edi],0
+	je 		.2
+.1:
+	inc		edi
+	mov		al, [edi]
+	cmp		al, 0
+	jnz		.1
+
+	dec		edi
+	mov		byte [edi],0
+.2:
+
+	mov     eax, [ebp + 8]  ; 返回值
+
+	pop     ebp
+	ret                     ; 函数结束，返回
 ; ------------------------------------------------------------------------
 ; int strlen(char* p_str);
 ; ------------------------------------------------------------------------

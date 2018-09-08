@@ -2,8 +2,8 @@
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                                tty.c
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-                                                    Forrest Yu, 2005
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+*/
 
 #include "type.h"
 #include "const.h"
@@ -24,6 +24,11 @@ PRIVATE void tty_do_read(TTY* p_tty);
 PRIVATE void tty_do_write(TTY* p_tty);
 PRIVATE void put_key(TTY* p_tty, u32 key);
 
+PUBLIC void testDel(CONSOLE* p_con)
+{
+	for(int i=0;i<10;i++)
+		out_char(p_con,'\b');
+}
 /*======================================================================*
                            task_tty
  *======================================================================*/
@@ -40,6 +45,9 @@ PUBLIC void task_tty()
 		init_tty(p_tty);
 	}
 	select_console(0);
+
+	clear_init_screen(&console_table[nr_current_console]);
+
 	while (1) {
 		for (p_tty=TTY_FIRST;p_tty<TTY_END;p_tty++) {
 			tty_do_read(p_tty);
@@ -61,20 +69,12 @@ PRIVATE void init_tty(TTY* p_tty)
 	init_screen(p_tty);
 }
 
-/*void strcat(char* str,char ch)
+void clear_screen(CONSOLE* p_con)
 {
-	char tail[2];
-	tail[0]=ch;
-	tail[1]='\0';
-	for(int i=0;i<STR_DEFAULT_LEN;i++)
-	{
-		if(str[i]=='\0')
-		{
-			strcpy(str+strlen(str),tail);
-			return;
-		}
-	}
-}*/
+	do{
+		out_char(p_con,'\b');
+	}while(p_con->cursor > p_con->current_start_addr);
+}
 /*======================================================================*
 				in_process
  *======================================================================*/
@@ -84,24 +84,28 @@ PUBLIC void in_process(TTY* p_tty, u32 key)
 	reset_msg(&msg);
 	//msg.source = TASK_TTY;
         if (!(key & FLAG_EXT)) {
-			strcat(p_tty->currentInput,&key);
-			put_key(p_tty, key);			
+			strcatch(p_tty->currentInput,&key);
+			put_key(p_tty, key);
         }
         else {
                 int raw_code = key & MASK_RAW;
                 switch(raw_code) {
                 case ENTER:
 					put_key(p_tty, '\n');
-					//msg.type = GET_INPUT;
 					msg.INSSM = p_tty->currentInput;
 					msg.INTTY = p_tty;
 					send_recv(SEND,TASK_SHELL,&msg);
-					//strcpy(p_tty->currentInput,"");					
-					//memset(p_tty->p_console->currentIn,STR_DEFAULT_LEN,'\0');
-					reset_msg(&msg);					
+					reset_msg(&msg);
+					send_recv(RECEIVE,TASK_SHELL,&msg);
+					if(msg.type == TTY_DO_CLEAR)
+						clear_screen(p_tty->p_console);
+					if(msg.type == TTY_DO_INDEX)
+						select_console(0);
+					strcpy(p_tty->currentInput,"");
 					break;
                 case BACKSPACE:
 					put_key(p_tty, '\b');
+					strdel(p_tty->currentInput);
 					break;
                 case UP:
                     if ((key & FLAG_SHIFT_L) || (key & FLAG_SHIFT_R)) {
@@ -116,7 +120,7 @@ PUBLIC void in_process(TTY* p_tty, u32 key)
 		case F1:
 		case F2:
 		case F3:
-		case F4:
+		/*case F4:
 		case F5:
 		case F6:
 		case F7:
@@ -124,7 +128,7 @@ PUBLIC void in_process(TTY* p_tty, u32 key)
 		case F9:
 		case F10:
 		case F11:
-		case F12:
+		case F12:*/
 			/* CTRL + F1~F12  切换终端*/
 			if ((key & FLAG_CTRL_L) || (key & FLAG_CTRL_R)) {
 				select_console(raw_code - F1);
@@ -271,35 +275,4 @@ PUBLIC int sys_printx(int _unused1, int _unused2, char* s, struct proc* p_proc)
 	return 0;
 }
 
-//比较两字符串是否相等
-PUBLIC int strcmp(char* str1,char* str2)
-{
-	int length1 = strlen(str1);
-	int length2 = strlen(str2);
-	if(length1 != length2)
-		return 0;	
-	for(int i=0;i<strlen(str1);i++)
-	{
-		if(str1[i] != str2[i])
-			return 0;	
-	}
-	return 1;
-}
-PUBLIC void task_shell()
-{
-	printf("Shell is running..\n");
-	MESSAGE msg;
-	char girl[]="mostlovelygirl";
-	reset_msg(&msg);
-	//msg.type = GET_INPUT;
-	while(1){
-		send_recv(RECEIVE,ANY,&msg);
-		printf("Shabby Input : %s",msg.INSSM);
-		if(strcmp(msg.INSSM,girl) == 1)
-			printf(":zyy");
-		printf(" | length: %d\n",strlen(msg.INSSM));
-		strcpy(msg.INSSM,"");
-		reset_msg(&msg);
-	}
-}
 

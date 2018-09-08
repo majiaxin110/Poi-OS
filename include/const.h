@@ -35,7 +35,9 @@ void assertion_failure(char *exp, char *file, char *base_file, int line);
  */
 #define BLACK   0x0     /* 0000 */
 #define WHITE   0x7     /* 0111 */
+#define YELLOW	0x6		//0110
 #define RED     0x4     /* 0100 */
+#define YRED	0x5		// 0101 洋红
 #define GREEN   0x2     /* 0010 */
 #define BLUE    0x1     /* 0001 */
 #define FLASH   0x80    /* 1000 0000 */
@@ -118,6 +120,10 @@ void assertion_failure(char *exp, char *file, char *base_file, int line);
 #define TASK_TTY	0
 #define TASK_SYS	1
 #define TASK_SHELL	2
+#define GPOW	3
+#define GTICKS 4
+#define TASK_TICKS 5
+
 /* #define TASK_WINCH	2 */
 /* #define TASK_FS	3 */
 /* #define TASK_MM	4 */
@@ -156,7 +162,27 @@ enum msgtype {
 
 #define	RETVAL		u.m3.m3i1
 
+//以下为Poi OS 原创内容
 #define INSSM		u.m3.m3p1
 #define INTTY		u.m3.m3p2
 
+#define NR_ORDERS	7
+//内置命令请放在这里
+#define GIRL "mostlovelygirl\0"
+#define HELP "help\0"
+#define CLEAR "clear\0"
+#define PROC "proc\0"
+#define GAME "game\0"
+#define POI "poi\0"
+#define SHUTDOWN "shutdown\0"
+
+//进程管理各选项
+#define LIST_ALL 'l'
+#define ADD 'n'
+#define BLOCK 'b'
+#define ACTIVATE 'a'
+
+//SHELL传递给TTY要做的事情
+#define TTY_DO_CLEAR -1
+#define TTY_DO_INDEX -2
 #endif /* _ORANGES_CONST_H_ */

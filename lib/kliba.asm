@@ -22,7 +22,7 @@ global	enable_irq
 global	disable_irq
 global	enable_int
 global	disable_int
-
+global  generate_music
 
 
 ; ========================================================================
@@ -219,4 +219,61 @@ enable_int:
 	sti
 	ret
 
+generate_music:
 
+	PUSH EBP
+	MOV EBP,ESP
+  
+  PUSH AX
+  PUSH BX
+  PUSH CX
+  PUSH DX
+  PUSH DI
+  
+
+	
+
+
+;	MOV	ESI, 	; 现在存放的应该的是频率
+
+  MOV  DI, [EBP + 8];  400   292  ;这里的数值，是频率
+
+  MOV  AL,0B6H  
+  OUT 43H,AL 
+   
+  MOV DX,12H  
+  MOV AX,348CH  
+  DIV DI  
+  
+  OUT 42H,AL  
+  MOV AL,AH  
+  OUT 42H,AL
+    
+  IN AL,61H  
+  MOV AH,AL  
+  OR AL,3  
+  OUT 61H,AL         ;打开扬声器
+
+  MOV   DX,[EBP + 12]      ;下面控制发音时间
+SOUND: 
+  MOV   CX,20000
+WAIT1: 
+  LOOP   WAIT1   
+
+  DEC     DX   
+  JNE     SOUND  
+   
+  IN  AL,  61H      ;关闭扬声器
+  AND AL,  0fch  
+  OUT  61H,  AL 
+  
+  
+  POP DI
+  POP DX
+  POP CX
+  POP BX
+  POP AX 
+ 
+  POP EBP
+  
+  RET

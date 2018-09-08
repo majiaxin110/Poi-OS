@@ -5,8 +5,8 @@
 						    Forrest Yu, 2005
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
-#ifndef _ORANGES_CONSOLE_H_
-#define _ORANGES_CONSOLE_H_
+#ifndef _POI_CONSOLE_H_
+#define _POI_CONSOLE_H_
 
 
 /* CONSOLE */
@@ -17,7 +17,6 @@ typedef struct s_console
 	unsigned int	v_mem_limit;		/* 当前控制台占的显存大小 */
 	unsigned int	cursor;			/* 当前光标位置 */
 
-	char currentIn[STR_DEFAULT_LEN];	//当前实际正在输入的命令
 }CONSOLE;
 
 #define SCR_UP	1	/* scroll forward */
@@ -28,7 +27,9 @@ typedef struct s_console
 
 #define DEFAULT_CHAR_COLOR	(MAKE_COLOR(BLACK, WHITE))
 #define GRAY_CHAR		(MAKE_COLOR(BLACK, BLACK) | BRIGHT)
-#define RED_CHAR		(MAKE_COLOR(BLUE, RED) | BRIGHT)
-
-
+#define RED_CHAR		(MAKE_COLOR(BLACK, RED) | BRIGHT)
+#define YRED_CHAR		(MAKE_COLOR(BLACK,BLUE) | BRIGHT)
+#define GREEN_CHAR		(MAKE_COLOR(BLACK,GREEN) | BRIGHT)
+#define BLUE_CHAR		(MAKE_COLOR(BLACK,BLUE) | BRIGHT)
+#define YELLOW_CHAR		(MAKE_COLOR(BLACK,YELLOW) | BRIGHT)
 #endif /* _ORANGES_CONSOLE_H_ */
