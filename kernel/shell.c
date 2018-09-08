@@ -14,6 +14,20 @@
 #include "game2048.h"
 
 PRIVATE int compareAndDo(char* input,SHELLINFO* info);
+
+PRIVATE int atoi(char* str)
+{
+	int result = 0;
+	for(int i=0;i<strlen(str);i++)
+	{
+		if(str[i] >= '0' && str[i] <= '9')
+			result = result*10 + str[i] - '0';
+		else
+			break;
+	}
+	return result;
+}
+
 PUBLIC void print_welcome()
 {
 	printf("Shell is running..\n--------");
@@ -45,18 +59,7 @@ PRIVATE void divideOrder(char* input,char* goal)
 		}
 	}
 }
-PRIVATE int atoi(char* str)
-{
-	int result = 0;
-	for(int i=0;i<strlen(str);i++)
-	{
-		if(str[i] >= '0' && str[i] <= '9')
-			result = result*10 + str[i] - '0';
-		else
-			break;
-	}
-	return result;
-}
+
 //处理有关进程的事务
 PRIVATE void manageProcess(char* input)
 {
@@ -83,7 +86,7 @@ PRIVATE void manageProcess(char* input)
 				printf(" ");
 			printf("| pid: %d |",proc_table[i+NR_TASKS].pid);
 			printf("| prio: %d | status: %d",proc_table[i+NR_TASKS].priority,proc_table[i+NR_TASKS].p_flags);
-		}
+		}	
 		printf("\n-------------------------\n");
 		break;
 	case BLOCK:
@@ -177,8 +180,10 @@ PRIVATE int compareAndDo(char* input,SHELLINFO* info)
 			printf("  | manage all process\n");
 			print_color_str(info->tty->p_console,"poi",GREEN_CHAR);
 			printf(" . . . . . . .| correct last input error\n");
-			print_color_str(info->tty->p_console,"game",GREEN_CHAR);
+			print_color_str(info->tty->p_console,"g2048",GREEN_CHAR);
 			printf(" . . . . . . | to play 2048 game\n");
+			print_color_str(info->tty->p_console,"gTicks",GREEN_CHAR);
+			printf(" . . . . . . | to play ticks game\n");
 			print_color_str(info->tty->p_console,"shutdown",GREEN_CHAR);
 			printf(" . . . . | to exit\n");
 			break;
@@ -188,7 +193,7 @@ PRIVATE int compareAndDo(char* input,SHELLINFO* info)
 			manageProcess(input);
 			break;
 		}
-		if(strcmp(info->currentOrder,GAME) == 1)
+		if(strcmp(info->currentOrder,GAME_2048) == 1)
 		{
 			printf("\nPress Ctrl+F3 to play 2048.");
 			while(1)
@@ -210,10 +215,35 @@ PRIVATE int compareAndDo(char* input,SHELLINFO* info)
 				if(strcmp(mtTest,"l\0") == 1)
 				{
 					msg.RETVAL = ENDGAME;
-					send_recv(SEND,TASK_GAME,&msg);
+					send_recv(SEND,GPOW,&msg);
 					return TTY_DO_INDEX;
-				}	
-				send_recv(SEND,TASK_GAME,&msg);
+				}
+				send_recv(SEND,GPOW,&msg);
+			}
+			break;
+		}
+		if(strcmp(info->currentOrder,GAME_TICKS) == 1)
+		{
+			printf("\nPress Ctrl+F2 to play ticks.");
+			while(1)
+			{
+				msg.type = 0;
+				send_recv(SEND,TASK_TTY,&msg);
+				reset_msg(&msg);
+				send_recv(RECEIVE,ANY,&msg);
+				
+				divideOrder(msg.INSSM,mtTest);
+				if(strcmp(mtTest,"a\0") == 1)
+					msg.RETVAL = GUP;
+				if(strcmp(mtTest,"r\0") == 1)
+					msg.RETVAL = GDOWN;
+				if(strcmp(mtTest,"l\0") == 1)
+				{
+					msg.RETVAL = ENDGAME;
+					send_recv(SEND,GTICKS,&msg);
+					return TTY_DO_INDEX;
+				}
+				send_recv(SEND,GTICKS,&msg);
 			}
 			break;
 		}
@@ -256,12 +286,13 @@ PRIVATE void init_info(SHELLINFO* info)
 {
 	info->ifError = 0;
 	strcpy(info->allOrder[0],GIRL);
+	printf("!!%d",strlen(info->allOrder[0]));
 	strcpy(info->allOrder[1],HELP);
 	strcpy(info->allOrder[2],CLEAR);
 	strcpy(info->allOrder[3],PROC);
 	strcpy(info->allOrder[4],POI);
-	strcpy(info->allOrder[5],GAME);
-	strcpy(info->allOrder[6],SHUTDOWN);
+	strcpy(info->allOrder[5],GAME_2048);
+	strcpy(info->allOrder[6],GAME_TICKS);
 }
 
 PUBLIC void task_shell()

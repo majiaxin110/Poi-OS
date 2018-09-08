@@ -120,7 +120,9 @@ void assertion_failure(char *exp, char *file, char *base_file, int line);
 #define TASK_TTY	0
 #define TASK_SYS	1
 #define TASK_SHELL	2
-#define TASK_GAME	3
+#define GPOW	3
+#define GTICKS 4
+#define TASK_TICKS 5
 
 /* #define TASK_WINCH	2 */
 /* #define TASK_FS	3 */
@@ -170,7 +172,8 @@ enum msgtype {
 #define HELP "help\0"
 #define CLEAR "clear\0"
 #define PROC "proc\0"
-#define GAME "game\0"
+#define GAME_2048 "g2048\0"
+#define GAME_TICKS "gTicks\0"
 #define POI "poi\0"
 #define SHUTDOWN "shutdown\0"
 

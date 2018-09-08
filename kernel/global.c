@@ -24,7 +24,9 @@ PUBLIC	struct task	task_table[NR_TASKS] = {
 	{task_tty, STACK_SIZE_TTY, "TTY"},
 	{task_sys, STACK_SIZE_SYS, "SYS"},
 	{task_shell,STACK_SIZE_SHELL, "SHELL"},
-	{G2048, STACK_SIZE_G2048, "G2048"}};
+	{Gpow, STACK_SIZE_GPOW, "GPOW"},
+	{Gticks, STACK_SIZE_GTICKS, "GTICKS"},
+	{task_tick, STACK_SIZE_TICK, "TT"}};
 
 PUBLIC	struct task	user_proc_table[NR_PROCS] = {
 	{TestA, STACK_SIZE_TESTA, "TestA"},
