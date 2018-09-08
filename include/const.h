@@ -172,8 +172,7 @@ enum msgtype {
 #define HELP "help\0"
 #define CLEAR "clear\0"
 #define PROC "proc\0"
-#define GAME_2048 "g2048\0"
-#define GAME_TICKS "gTicks\0"
+#define GAME "game\0"
 #define POI "poi\0"
 #define SHUTDOWN "shutdown\0"
 

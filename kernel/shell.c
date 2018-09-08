@@ -180,10 +180,9 @@ PRIVATE int compareAndDo(char* input,SHELLINFO* info)
 			printf("  | manage all process\n");
 			print_color_str(info->tty->p_console,"poi",GREEN_CHAR);
 			printf(" . . . . . . .| correct last input error\n");
-			print_color_str(info->tty->p_console,"g2048",GREEN_CHAR);
-			printf(" . . . . . . | to play 2048 game\n");
-			print_color_str(info->tty->p_console,"gTicks",GREEN_CHAR);
-			printf(" . . . . . . | to play ticks game\n");
+			print_color_str(info->tty->p_console,"game",GREEN_CHAR);
+			print_color_str(info->tty->p_console," [-options]",YELLOW_CHAR);
+			printf("  | to play games\n");
 			print_color_str(info->tty->p_console,"shutdown",GREEN_CHAR);
 			printf(" . . . . | to exit\n");
 			break;
@@ -193,38 +192,40 @@ PRIVATE int compareAndDo(char* input,SHELLINFO* info)
 			manageProcess(input);
 			break;
 		}
-		if(strcmp(info->currentOrder,GAME_2048) == 1)
+		if(strcmp(info->currentOrder,GAME) == 1)
 		{
-			printf("\nPress Ctrl+F3 to play 2048.");
-			while(1)
+			if(input[6] == '2')
 			{
-				msg.type = 0;
-				send_recv(SEND,TASK_TTY,&msg);
-				reset_msg(&msg);
-				send_recv(RECEIVE,ANY,&msg);
-				
-				divideOrder(msg.INSSM,mtTest);
-				if(strcmp(mtTest,"w\0") == 1)
-					msg.RETVAL = GUP;
-				if(strcmp(mtTest,"s\0") == 1)
-					msg.RETVAL = GDOWN;
-				if(strcmp(mtTest,"a\0") == 1)
-					msg.RETVAL = GLEFT;
-				if(strcmp(mtTest,"d\0") == 1)
-					msg.RETVAL = GRIGHT;
-				if(strcmp(mtTest,"l\0") == 1)
+				printf("\nPress Ctrl+F3 to play 2048.");
+				while(1)
 				{
-					msg.RETVAL = ENDGAME;
+					msg.type = 0;
+					send_recv(SEND,TASK_TTY,&msg);
+					reset_msg(&msg);
+					send_recv(RECEIVE,ANY,&msg);
+					
+					divideOrder(msg.INSSM,mtTest);
+					if(strcmp(mtTest,"w\0") == 1)
+						msg.RETVAL = GUP;
+					if(strcmp(mtTest,"s\0") == 1)
+						msg.RETVAL = GDOWN;
+					if(strcmp(mtTest,"a\0") == 1)
+						msg.RETVAL = GLEFT;
+					if(strcmp(mtTest,"d\0") == 1)
+						msg.RETVAL = GRIGHT;
+					if(strcmp(mtTest,"l\0") == 1)
+					{
+						msg.RETVAL = ENDGAME;
+						send_recv(SEND,GPOW,&msg);
+						return TTY_DO_INDEX;
+					}
 					send_recv(SEND,GPOW,&msg);
-					return TTY_DO_INDEX;
 				}
-				send_recv(SEND,GPOW,&msg);
+				break;
 			}
-			break;
-		}
-		if(strcmp(info->currentOrder,GAME_TICKS) == 1)
-		{
-			printf("\nPress Ctrl+F2 to play ticks.");
+			else
+			{
+				printf("\nPress Ctrl+F2 to play ticks.");
 			while(1)
 			{
 				msg.type = 0;
@@ -246,13 +247,17 @@ PRIVATE int compareAndDo(char* input,SHELLINFO* info)
 				send_recv(SEND,GTICKS,&msg);
 			}
 			break;
+			}
 		}
 		if(strcmp(info->currentOrder,SHUTDOWN) == 1)
 		{
 			printf("\nPOI OS is shutting down...");
 			delay(100);
 			clear_screen(info->tty->p_console);
+			clear_screen(&(console_table[1]));
+			clear_screen(&(console_table[2]));
 			clear_init_screen(info->tty->p_console);
+			//关中断
 			disable_int();
 			for(int i = 0;i < NR_IRQ;i++)
 				disable_irq(i);
@@ -286,13 +291,12 @@ PRIVATE void init_info(SHELLINFO* info)
 {
 	info->ifError = 0;
 	strcpy(info->allOrder[0],GIRL);
-	printf("!!%d",strlen(info->allOrder[0]));
 	strcpy(info->allOrder[1],HELP);
 	strcpy(info->allOrder[2],CLEAR);
 	strcpy(info->allOrder[3],PROC);
 	strcpy(info->allOrder[4],POI);
-	strcpy(info->allOrder[5],GAME_2048);
-	strcpy(info->allOrder[6],GAME_TICKS);
+	strcpy(info->allOrder[5],GAME);
+	strcpy(info->allOrder[6],SHUTDOWN);
 }
 
 PUBLIC void task_shell()
