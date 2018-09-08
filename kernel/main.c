@@ -139,6 +139,14 @@ void TestA()
  *======================================================================*/
 void TestB()
 {
+	delay(3);
+	// int l;
+	// while(1)
+	// {
+	// 	l = rtcSecond();
+	// 	printf("!!## %d  ",l);
+	// 	delay(50);
+	// }
 	spin("B");
 }
 
@@ -147,11 +155,6 @@ void TestB()
  *======================================================================*/
 void TestC()
 {
-	int currentPrio = proc_table[5].priority;
-    printf("!!@@ %d\n",currentPrio);
-    proc_table[5].priority = 26;
-    currentPrio = proc_table[5].priority;
-    printf("!!** %d",currentPrio);
 	printf("C");
 	while(1){}
 }

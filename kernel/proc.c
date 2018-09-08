@@ -606,3 +606,23 @@ PUBLIC int strcmp(char* str1,char* str2)
 	}
 	return 1;
 }
+
+PUBLIC int sys_getSecond()
+{
+	int value;
+	do
+	{
+		value = 0x0a;
+		value = value | 0x80;
+		out_byte(0x70,value);
+		value = in_byte(0x71);
+	}while(value & 0x80 != 0);
+	value = 2;
+	value = value | 0x80;
+	out_byte(0x70,value);
+	value = in_byte(0x71);
+	out_byte(0x70,0);
+	value<<28;
+	value>>28;
+	return value;
+}

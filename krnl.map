@@ -235,7 +235,7 @@ LOAD lib/misc.o
 .plt.sec
  *(.plt.sec)
 
-.text           0x0000000000030400     0x623b
+.text           0x0000000000030400     0x631b
  *(.text.unlikely .text.*_unlikely .text.unlikely.*)
  *(.text.exit .text.exit.*)
  *(.text.startup .text.startup.*)
@@ -278,117 +278,119 @@ LOAD lib/misc.o
                 0x00000000000306d2                sys_call
                 0x00000000000306f2                restart
  *fill*         0x0000000000030717        0x9 
- .text          0x0000000000030720       0x20 kernel/syscall.o
+ .text          0x0000000000030720       0x28 kernel/syscall.o
                 0x0000000000030720                sendrec
                 0x0000000000030734                printx
- .text          0x0000000000030740       0xc3 kernel/start.o
-                0x0000000000030740                cstart
+                0x0000000000030740                rtcSecond
+ .text          0x0000000000030748       0xc3 kernel/start.o
+                0x0000000000030748                cstart
  .text.__x86.get_pc_thunk.bx
-                0x0000000000030803        0x4 kernel/start.o
-                0x0000000000030803                __x86.get_pc_thunk.bx
- .text          0x0000000000030807      0x4a2 kernel/main.o
-                0x0000000000030807                kernel_main
-                0x0000000000030ae3                get_ticks
-                0x0000000000030b26                TestA
-                0x0000000000030ba6                TestB
-                0x0000000000030bd1                TestC
-                0x0000000000030c4f                panic
+                0x000000000003080b        0x4 kernel/start.o
+                0x000000000003080b                __x86.get_pc_thunk.bx
+ .text          0x000000000003080f      0x46b kernel/main.o
+                0x000000000003080f                kernel_main
+                0x0000000000030aeb                get_ticks
+                0x0000000000030b2e                TestA
+                0x0000000000030bae                TestB
+                0x0000000000030bf9                TestC
+                0x0000000000030c20                panic
  .text.__x86.get_pc_thunk.ax
-                0x0000000000030ca9        0x4 kernel/main.o
-                0x0000000000030ca9                __x86.get_pc_thunk.ax
- .text          0x0000000000030cad      0x116 kernel/clock.o
-                0x0000000000030cad                clock_handler
-                0x0000000000030d10                milli_delay
-                0x0000000000030d5a                init_clock
- .text          0x0000000000030dc3      0x749 kernel/keyboard.o
-                0x0000000000030dc3                keyboard_handler
-                0x0000000000030e3c                init_keyboard
-                0x0000000000030efc                keyboard_read
- .text          0x000000000003150c      0x740 kernel/tty.o
-                0x000000000003150c                testDel
-                0x0000000000031547                task_tty
-                0x000000000003166b                clear_screen
-                0x00000000000316a2                in_process
-                0x0000000000031a1d                tty_write
-                0x0000000000031a72                sys_printx
- .text          0x0000000000031c4c      0x5cf kernel/console.o
-                0x0000000000031c4c                init_screen
-                0x0000000000031d87                is_current_console
-                0x0000000000031db2                out_char
-                0x0000000000031efb                out_color_char
-                0x0000000000031f9f                print_color_str
-                0x000000000003212a                select_console
-                0x0000000000032170                scroll_screen
-                0x00000000000321e5                clear_init_screen
+                0x0000000000030c7a        0x4 kernel/main.o
+                0x0000000000030c7a                __x86.get_pc_thunk.ax
+ .text          0x0000000000030c7e      0x116 kernel/clock.o
+                0x0000000000030c7e                clock_handler
+                0x0000000000030ce1                milli_delay
+                0x0000000000030d2b                init_clock
+ .text          0x0000000000030d94      0x749 kernel/keyboard.o
+                0x0000000000030d94                keyboard_handler
+                0x0000000000030e0d                init_keyboard
+                0x0000000000030ecd                keyboard_read
+ .text          0x00000000000314dd      0x740 kernel/tty.o
+                0x00000000000314dd                testDel
+                0x0000000000031518                task_tty
+                0x000000000003163c                clear_screen
+                0x0000000000031673                in_process
+                0x00000000000319ee                tty_write
+                0x0000000000031a43                sys_printx
+ .text          0x0000000000031c1d      0x5cf kernel/console.o
+                0x0000000000031c1d                init_screen
+                0x0000000000031d58                is_current_console
+                0x0000000000031d83                out_char
+                0x0000000000031ecc                out_color_char
+                0x0000000000031f70                print_color_str
+                0x00000000000320fb                select_console
+                0x0000000000032141                scroll_screen
+                0x00000000000321b6                clear_init_screen
  .text.__x86.get_pc_thunk.cx
-                0x000000000003221b        0x4 kernel/console.o
-                0x000000000003221b                __x86.get_pc_thunk.cx
- .text          0x000000000003221f      0x167 kernel/i8259.o
-                0x000000000003221f                init_8259A
-                0x0000000000032307                spurious_irq
-                0x0000000000032351                put_irq_handler
- .text          0x0000000000032386        0x0 kernel/global.o
- .text          0x0000000000032386      0x6c7 kernel/protect.o
-                0x0000000000032386                init_prot
-                0x0000000000032823                seg2phys
-                0x00000000000328f6                exception_handler
- .text          0x0000000000032a4d     0x1906 kernel/proc.o
-                0x0000000000032a4d                schedule
-                0x0000000000032b01                sys_sendrec
-                0x0000000000032c48                send_recv
-                0x0000000000032d1a                ldt_seg_linear
-                0x0000000000032d6e                va2la
-                0x0000000000032de7                reset_msg
-                0x0000000000033db8                dump_proc
-                0x0000000000034194                dump_msg
-                0x00000000000342c5                strcmp
+                0x00000000000321ec        0x4 kernel/console.o
+                0x00000000000321ec                __x86.get_pc_thunk.cx
+ .text          0x00000000000321f0      0x167 kernel/i8259.o
+                0x00000000000321f0                init_8259A
+                0x00000000000322d8                spurious_irq
+                0x0000000000032322                put_irq_handler
+ .text          0x0000000000032357        0x0 kernel/global.o
+ .text          0x0000000000032357      0x6c7 kernel/protect.o
+                0x0000000000032357                init_prot
+                0x00000000000327f4                seg2phys
+                0x00000000000328c7                exception_handler
+ .text          0x0000000000032a1e     0x19a3 kernel/proc.o
+                0x0000000000032a1e                schedule
+                0x0000000000032ad2                sys_sendrec
+                0x0000000000032c19                send_recv
+                0x0000000000032ceb                ldt_seg_linear
+                0x0000000000032d3f                va2la
+                0x0000000000032db8                reset_msg
+                0x0000000000033d89                dump_proc
+                0x0000000000034165                dump_msg
+                0x0000000000034296                strcmp
+                0x0000000000034324                sys_getSecond
  .text.__x86.get_pc_thunk.dx
-                0x0000000000034353        0x4 kernel/proc.o
-                0x0000000000034353                __x86.get_pc_thunk.dx
- .text          0x0000000000034357       0x69 kernel/systask.o
-                0x0000000000034357                task_sys
- .text          0x00000000000343c0      0xed8 kernel/shell.o
-                0x00000000000343c0                print_welcome
-                0x00000000000350b8                task_shell
- .text          0x0000000000035298      0xc0f kernel/game.o
-                0x0000000000035298                doRand
-                0x0000000000035d5b                G2048
+                0x00000000000343c1        0x4 kernel/proc.o
+                0x00000000000343c1                __x86.get_pc_thunk.dx
+ .text          0x00000000000343c5       0x69 kernel/systask.o
+                0x00000000000343c5                task_sys
+ .text          0x000000000003442e      0xf5b kernel/shell.o
+                0x000000000003442e                print_welcome
+                0x00000000000351a9                task_shell
+ .text          0x0000000000035389      0xbfd kernel/game.o
+                0x0000000000035389                doRand
+                0x0000000000035e4c                G2048
  .text.__x86.get_pc_thunk.si
-                0x0000000000035ea7        0x4 kernel/game.o
-                0x0000000000035ea7                __x86.get_pc_thunk.si
- .text          0x0000000000035eab       0x5f kernel/printf.o
-                0x0000000000035eab                printf
- .text          0x0000000000035f0a      0x330 kernel/vsprintf.o
-                0x0000000000035f7a                vsprintf
-                0x000000000003620a                sprintf
- *fill*         0x000000000003623a        0x6 
- .text          0x0000000000036240      0x141 lib/kliba.o
-                0x0000000000036240                disp_str
-                0x0000000000036286                disp_color_str
-                0x00000000000362c5                out_byte
-                0x00000000000362d1                in_byte
-                0x00000000000362db                disable_irq
-                0x0000000000036310                enable_irq
-                0x000000000003632f                disable_int
-                0x0000000000036331                enable_int
-                0x0000000000036333                generate_music
- .text          0x0000000000036381      0x13c lib/klib.o
-                0x0000000000036381                itoa
-                0x0000000000036436                disp_int
-                0x000000000003646c                delay
- *fill*         0x00000000000364bd        0x3 
- .text          0x00000000000364c0       0xdb lib/string.o
-                0x00000000000364c0                memcpy
-                0x00000000000364e9                memset
-                0x000000000003650a                strcpy
-                0x0000000000036522                strcatch
-                0x0000000000036546                strcat
-                0x000000000003656a                strdel
-                0x0000000000036585                strlen
- .text          0x000000000003659b       0xa0 lib/misc.o
-                0x000000000003659b                spin
-                0x00000000000365c5                spinProc
-                0x00000000000365ef                assertion_failure
+                0x0000000000035f86        0x4 kernel/game.o
+                0x0000000000035f86                __x86.get_pc_thunk.si
+ .text          0x0000000000035f8a       0x5f kernel/printf.o
+                0x0000000000035f8a                printf
+ .text          0x0000000000035fe9      0x330 kernel/vsprintf.o
+                0x0000000000036059                vsprintf
+                0x00000000000362e9                sprintf
+ *fill*         0x0000000000036319        0x7 
+ .text          0x0000000000036320      0x141 lib/kliba.o
+                0x0000000000036320                disp_str
+                0x0000000000036366                disp_color_str
+                0x00000000000363a5                out_byte
+                0x00000000000363b1                in_byte
+                0x00000000000363bb                disable_irq
+                0x00000000000363f0                enable_irq
+                0x000000000003640f                disable_int
+                0x0000000000036411                enable_int
+                0x0000000000036413                generate_music
+ .text          0x0000000000036461      0x13c lib/klib.o
+                0x0000000000036461                itoa
+                0x0000000000036516                disp_int
+                0x000000000003654c                delay
+ *fill*         0x000000000003659d        0x3 
+ .text          0x00000000000365a0       0xdb lib/string.o
+                0x00000000000365a0                memcpy
+                0x00000000000365c9                memset
+                0x00000000000365ea                strcpy
+                0x0000000000036602                strcatch
+                0x0000000000036626                strcat
+                0x000000000003664a                strdel
+                0x0000000000036665                strlen
+ .text          0x000000000003667b       0xa0 lib/misc.o
+                0x000000000003667b                spin
+                0x00000000000366a5                spinProc
+                0x00000000000366cf                assertion_failure
  *(.gnu.warning)
 
 .fini
@@ -397,23 +399,23 @@ LOAD lib/misc.o
                 [!provide]                        PROVIDE (_etext = .)
                 [!provide]                        PROVIDE (etext = .)
 
-.rodata         0x0000000000036640     0x1219
+.rodata         0x0000000000036720     0x1275
  *(.rodata .rodata.* .gnu.linkonce.r.*)
- .rodata        0x0000000000036640       0x47 kernel/start.o
- *fill*         0x0000000000036687        0x1 
- .rodata        0x0000000000036688       0x56 kernel/main.o
- *fill*         0x00000000000366de        0x2 
- .rodata        0x00000000000366e0       0x64 kernel/keyboard.o
- .rodata        0x0000000000036744       0x94 kernel/tty.o
- .rodata        0x00000000000367d8       0x11 kernel/i8259.o
- *fill*         0x00000000000367e9       0x17 
- .rodata        0x0000000000036800      0x540 kernel/protect.o
- .rodata        0x0000000000036d40      0x5fe kernel/proc.o
- .rodata        0x000000000003733e       0x11 kernel/systask.o
- *fill*         0x000000000003734f        0x1 
- .rodata        0x0000000000037350      0x3f4 kernel/shell.o
- .rodata        0x0000000000037744       0x98 kernel/game.o
- .rodata        0x00000000000377dc       0x7d lib/misc.o
+ .rodata        0x0000000000036720       0x47 kernel/start.o
+ *fill*         0x0000000000036767        0x1 
+ .rodata        0x0000000000036768       0x4d kernel/main.o
+ *fill*         0x00000000000367b5        0x3 
+ .rodata        0x00000000000367b8       0x64 kernel/keyboard.o
+ .rodata        0x000000000003681c       0x94 kernel/tty.o
+ .rodata        0x00000000000368b0       0x11 kernel/i8259.o
+ *fill*         0x00000000000368c1       0x1f 
+ .rodata        0x00000000000368e0      0x540 kernel/protect.o
+ .rodata        0x0000000000036e20      0x5fe kernel/proc.o
+ .rodata        0x000000000003741e       0x11 kernel/systask.o
+ *fill*         0x000000000003742f        0x1 
+ .rodata        0x0000000000037430      0x454 kernel/shell.o
+ .rodata        0x0000000000037884       0x94 kernel/game.o
+ .rodata        0x0000000000037918       0x7d lib/misc.o
 
 .rodata1
  *(.rodata1)
@@ -422,38 +424,38 @@ LOAD lib/misc.o
  *(.eh_frame_hdr)
  *(.eh_frame_entry .eh_frame_entry.*)
 
-.eh_frame       0x000000000003785c      0xc18
+.eh_frame       0x0000000000037998      0xc34
  *(.eh_frame)
- .eh_frame      0x000000000003785c       0x50 kernel/start.o
- .eh_frame      0x00000000000378ac       0xdc kernel/main.o
-                                        0x108 (松开之前的大小)
- .eh_frame      0x0000000000037988       0x6c kernel/clock.o
+ .eh_frame      0x0000000000037998       0x50 kernel/start.o
+ .eh_frame      0x00000000000379e8       0xd4 kernel/main.o
+                                        0x100 (松开之前的大小)
+ .eh_frame      0x0000000000037abc       0x6c kernel/clock.o
                                          0xac (松开之前的大小)
- .eh_frame      0x00000000000379f4       0xfc kernel/keyboard.o
+ .eh_frame      0x0000000000037b28       0xfc kernel/keyboard.o
                                         0x128 (松开之前的大小)
- .eh_frame      0x0000000000037af0      0x15c kernel/tty.o
+ .eh_frame      0x0000000000037c24      0x15c kernel/tty.o
                                         0x19c (松开之前的大小)
- .eh_frame      0x0000000000037c4c      0x184 kernel/console.o
+ .eh_frame      0x0000000000037d80      0x184 kernel/console.o
                                         0x1c4 (松开之前的大小)
- .eh_frame      0x0000000000037dd0       0x6c kernel/i8259.o
+ .eh_frame      0x0000000000037f04       0x6c kernel/i8259.o
                                          0x98 (松开之前的大小)
- .eh_frame      0x0000000000037e3c       0xb8 kernel/protect.o
+ .eh_frame      0x0000000000037f70       0xb8 kernel/protect.o
                                          0xf8 (松开之前的大小)
- .eh_frame      0x0000000000037ef4      0x220 kernel/proc.o
-                                        0x260 (松开之前的大小)
- .eh_frame      0x0000000000038114       0x1c kernel/systask.o
+ .eh_frame      0x0000000000038028      0x244 kernel/proc.o
+                                        0x284 (松开之前的大小)
+ .eh_frame      0x000000000003826c       0x1c kernel/systask.o
                                          0x48 (松开之前的大小)
- .eh_frame      0x0000000000038130      0x11c kernel/shell.o
+ .eh_frame      0x0000000000038288      0x11c kernel/shell.o
                                         0x15c (松开之前的大小)
- .eh_frame      0x000000000003824c       0xdc kernel/game.o
+ .eh_frame      0x00000000000383a4       0xdc kernel/game.o
                                         0x130 (松开之前的大小)
- .eh_frame      0x0000000000038328       0x24 kernel/printf.o
+ .eh_frame      0x0000000000038480       0x24 kernel/printf.o
                                          0x50 (松开之前的大小)
- .eh_frame      0x000000000003834c       0x68 kernel/vsprintf.o
+ .eh_frame      0x00000000000384a4       0x68 kernel/vsprintf.o
                                          0xa8 (松开之前的大小)
- .eh_frame      0x00000000000383b4       0x64 lib/klib.o
+ .eh_frame      0x000000000003850c       0x64 lib/klib.o
                                          0xa4 (松开之前的大小)
- .eh_frame      0x0000000000038418       0x5c lib/misc.o
+ .eh_frame      0x0000000000038570       0x5c lib/misc.o
                                          0x9c (松开之前的大小)
  *(.eh_frame.*)
 
