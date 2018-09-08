@@ -94,7 +94,9 @@ PUBLIC int kernel_main()
         proc_table[NR_TASKS + 1].nr_tty = 1;
         proc_table[NR_TASKS + 2].nr_tty = 1;
 		proc_table[3].nr_tty = 2;
-
+		proc_table[4].nr_tty = 1;
+		proc_table[5].nr_tty = 1;
+		
 	k_reenter = 0;
 	ticks = 0;
 

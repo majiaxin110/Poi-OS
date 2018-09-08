@@ -61,7 +61,9 @@ PUBLIC void task_shell();
 PUBLIC void print_welcome();
 
 //game.c
-PUBLIC void G2048();
+PUBLIC void Gpow();
+PUBLIC void Gticks();
+PUBLIC void task_tick();
 
 //rand.c
 PUBLIC int rand();

@@ -75,7 +75,7 @@ struct task {
 #define proc2pid(x) (x - proc_table)
 
 /* Number of tasks & procs */
-#define NR_TASKS	4
+#define NR_TASKS	6
 #define NR_PROCS	3
 #define FIRST_PROC	proc_table[0]
 #define LAST_PROC	proc_table[NR_TASKS + NR_PROCS - 1]
@@ -87,7 +87,9 @@ struct task {
 #define STACK_SIZE_TESTA	0x8000
 #define STACK_SIZE_TESTB	0x8000
 #define STACK_SIZE_TESTC	0x8000
-#define STACK_SIZE_G2048	0x8000
+#define STACK_SIZE_GPOW		0x8000
+#define STACK_SIZE_GTICKS   0x8000
+#define STACK_SIZE_TICK 0x8000
 
 #define STACK_SIZE_TOTAL	(STACK_SIZE_TTY + \
 				STACK_SIZE_SYS + \
@@ -95,7 +97,9 @@ struct task {
 				STACK_SIZE_TESTA + \
 				STACK_SIZE_TESTB + \
 				STACK_SIZE_TESTC + \
-				STACK_SIZE_G2048)
+				STACK_SIZE_GPOW + \
+				STACK_SIZE_GTICKS +\
+				STACK_SIZE_TICK)
 
 
 

@@ -12,6 +12,10 @@
 #include "proto.h"
 #include "shell.h"
 #include "game2048.h"
+#include <string.h>
+
+PUBLIC int print = 1;
+PUBLIC int preticks = -1;      //global interger for ticks game
 
 PUBLIC int doRand(GDATA* data)//产生0-4随机数
 {
@@ -150,13 +154,13 @@ PRIVATE int tryMove(int direc,GDATA* data)
 
         break;
     default:
-        printf("move error!\n");
+        printf("move error!");
         break;
     }
 
 }
 
-PUBLIC void G2048()
+PUBLIC void Gpow()
 {
     GDATA data;
     initGame(&data);
@@ -175,11 +179,113 @@ PUBLIC void G2048()
         {
             initGame(&data);
             clearAndPrint(&data);
+            printf("\ngame process waiting...\npress ");
+            print_color_str(data.p_con,"w a s d ",GREEN_CHAR);
+            printf("to move, ");
+            print_color_str(data.p_con,"l ",GREEN_CHAR);
+            printf("to exit.\n");
             reset_msg(&msg);
             continue;
         }
         tryMove(msg.RETVAL,&data);
         clearAndPrint(&data);
         reset_msg(&msg);
+    }
+}
+
+PUBLIC void Gticks()
+{
+    
+    int best_score = 5000;
+    GDATA data;
+    data.p_con = &(console_table[1]);
+    MESSAGE msg;
+    reset_msg(&msg);
+    clear_screen(data.p_con); 
+    print_color_str(data.p_con,"Try to stop at ",YELLOW_CHAR);
+    print_color_str(data.p_con,"1000 TICKS !",RED_CHAR);
+    printf("\n");
+    print_color_str(data.p_con,"Scan in ",YELLOW_CHAR);
+    print_color_str(data.p_con,"'a'",RED_CHAR);
+    print_color_str(data.p_con," to start and stop.",YELLOW_CHAR);
+    printf("\n");
+    print_color_str(data.p_con,"GoodLuck!.",YELLOW_CHAR);
+    printf("\n");
+    while(1)
+    {
+        send_recv(RECEIVE,ANY,&msg);
+        if(msg.RETVAL == ENDGAME)
+        {
+            clear_screen(data.p_con);
+            reset_msg(&msg);
+            continue;
+        }
+        if(msg.RETVAL == GUP)
+        {
+            if(preticks == -1){
+                preticks = get_game_ticks();
+                printf("\n");
+                print_color_str(data.p_con,"GameStart",RED_CHAR);
+                printf("\n");
+                msg.RETVAL = GLEFT;
+				send_recv(SEND,TASK_TICKS,&msg);      //process to print ticks
+            }
+            else{
+                print = 0;
+                int gap = get_game_ticks()-preticks-1000;
+                if(gap<0){
+                    gap = -gap;
+                    printf("\nYou are early for %d ticks!\n",gap);
+                }   
+                else if(gap>0)
+                    printf("\nYou are late for %d ticks!\n",gap);
+                else
+                    printf("\nYou win!\n");
+                if(gap<best_score)
+                    best_score = gap;
+                printf("Best score is %d\n", best_score);
+                print_color_str(data.p_con,"Press 'r' to Restart.",RED_CHAR);
+                printf("\n");
+            }
+        }
+        if(msg.RETVAL == GDOWN)
+        {
+            clear_screen(data.p_con); 
+            print_color_str(data.p_con,"Try to stop at ",YELLOW_CHAR);
+            print_color_str(data.p_con,"1000 TICKS !",RED_CHAR);
+            printf("\n");
+            print_color_str(data.p_con,"Scan in ",YELLOW_CHAR);
+            print_color_str(data.p_con,"'a'",RED_CHAR);
+            print_color_str(data.p_con," to start and stop.",YELLOW_CHAR);
+            printf("\n");
+            print_color_str(data.p_con,"GoodLuck!.",YELLOW_CHAR);
+            printf("\n");
+            preticks = -1;
+        }
+    }
+}
+
+PUBLIC int get_game_ticks()
+{
+    return get_ticks()/10;
+}
+
+PUBLIC void task_tick()
+{
+    MESSAGE msg;
+    reset_msg(&msg);
+    while(1)
+    {
+        send_recv(RECEIVE,ANY,&msg);
+        if(msg.RETVAL == GLEFT)
+        {
+            while(print)
+            {
+                printf("%d ",get_game_ticks()-preticks);
+                milli_delay(300);
+            }
+            reset_msg(&msg);
+        }
+        print = 1;
     }
 }
