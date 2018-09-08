@@ -27,28 +27,28 @@ PUBLIC int kernel_main()
 	struct proc* p_proc= proc_table;
 	char* p_task_stack = task_stack + STACK_SIZE_TOTAL;
 	u16   selector_ldt = SELECTOR_LDT_FIRST;
-        u8    privilege;
-        u8    rpl;
+	u8    privilege;
+	u8    rpl;
 	int   eflags;
 	int   i;
 	int   prio;
-	for (i = 0; i < NR_TASKS+NR_PROCS; i++) {
-	        if (i < NR_TASKS) {     /* 任务 */
-                        p_task    = task_table + i;
-                        privilege = PRIVILEGE_TASK;
-                        rpl       = RPL_TASK;
-                        eflags    = 0x1202; /* IF=1, IOPL=1, bit 2 is always 1 */
+	for (i = 0; i < NR_TASKS+NR_PROCS; i++) 
+	{
+		if (i < NR_TASKS) 
+		{     /* 任务 */
+			p_task    = task_table + i;
+			privilege = PRIVILEGE_TASK;
+			rpl       = RPL_TASK;
+			eflags    = 0x1202; /* IF=1, IOPL=1, bit 2 is always 1 */
 			prio      = 15;
-				if(i == 3)
-					prio = 30;
-                }
-                else {                  /* 用户进程 */
-                        p_task    = user_proc_table + (i - NR_TASKS);
-                        privilege = PRIVILEGE_USER;
-                        rpl       = RPL_USER;
-                        eflags    = 0x202; /* IF=1, bit 2 is always 1 */
+		}
+		else {                  /* 用户进程 */
+				p_task    = user_proc_table + (i - NR_TASKS);
+				privilege = PRIVILEGE_USER;
+				rpl       = RPL_USER;
+				eflags    = 0x202; /* IF=1, bit 2 is always 1 */
 			prio      = 5;
-                }
+		}
 
 		strcpy(p_proc->name, p_task->name);	/* name of the process */
 		p_proc->pid = i;			/* pid */
@@ -99,12 +99,10 @@ PUBLIC int kernel_main()
 	ticks = 0;
 
 	p_proc_ready	= proc_table;
-
 	init_clock();
     init_keyboard();
 
 	restart();
-
 	while(1){}
 }
 
@@ -121,7 +119,6 @@ PUBLIC int get_ticks()
 	return msg.RETVAL;
 }
 
-
 /*======================================================================*
                                TestA
  *======================================================================*/
@@ -133,7 +130,7 @@ void TestA()
 		printf("<Ticks:%d>", get_ticks());
 		milli_delay(200);
 	}
-	
+	disp_str("ssA");
 	spin("A");
 }
 
@@ -150,6 +147,11 @@ void TestB()
  *======================================================================*/
 void TestC()
 {
+	int currentPrio = proc_table[5].priority;
+    printf("!!@@ %d\n",currentPrio);
+    proc_table[5].priority = 26;
+    currentPrio = proc_table[5].priority;
+    printf("!!** %d",currentPrio);
 	printf("C");
 	while(1){}
 }

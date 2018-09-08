@@ -164,7 +164,7 @@ enum msgtype {
 #define INSSM		u.m3.m3p1
 #define INTTY		u.m3.m3p2
 
-#define NR_ORDERS	6
+#define NR_ORDERS	7
 //内置命令请放在这里
 #define GIRL "mostlovelygirl\0"
 #define HELP "help\0"
@@ -172,10 +172,13 @@ enum msgtype {
 #define PROC "proc\0"
 #define GAME "game\0"
 #define POI "poi\0"
+#define SHUTDOWN "shutdown\0"
 
 //进程管理各选项
 #define LIST_ALL 'l'
 #define ADD 'n'
+#define BLOCK 'b'
+#define ACTIVATE 'a'
 
 //SHELL传递给TTY要做的事情
 #define TTY_DO_CLEAR -1

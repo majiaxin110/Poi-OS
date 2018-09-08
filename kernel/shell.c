@@ -45,11 +45,23 @@ PRIVATE void divideOrder(char* input,char* goal)
 		}
 	}
 }
-
+PRIVATE int atoi(char* str)
+{
+	int result = 0;
+	for(int i=0;i<strlen(str);i++)
+	{
+		if(str[i] >= '0' && str[i] <= '9')
+			result = result*10 + str[i] - '0';
+		else
+			break;
+	}
+	return result;
+}
 //处理有关进程的事务
 PRIVATE void manageProcess(char* input)
 {
 	int nameLen = 0;
+	int pid = 0;
 	switch(input[6])
 	{
 	case LIST_ALL:
@@ -60,7 +72,8 @@ PRIVATE void manageProcess(char* input)
 			printf("\ntask: %s ",task_table[i].name);
 			for(int j=0;j<9-nameLen;j++)
 				printf(" ");
-			printf("| pid: %d",proc_table[i].pid);
+			printf("| pid: %d ",proc_table[i].pid);
+			printf("| prio: %d",proc_table[i].priority);
 		}	
 		for(int i=0;i<NR_PROCS;i++)
 		{
@@ -68,12 +81,34 @@ PRIVATE void manageProcess(char* input)
 			printf("\nprocess: %s ",proc_table[i+NR_TASKS].name);
 			for(int j=0;j<6-nameLen;j++)
 				printf(" ");
-			printf("| pid: %d ",proc_table[i+NR_TASKS].pid);
-		}	
+			printf("| pid: %d |",proc_table[i+NR_TASKS].pid);
+			printf("| prio: %d | status: %d",proc_table[i+NR_TASKS].priority,proc_table[i+NR_TASKS].p_flags);
+		}
 		printf("\n-------------------------\n");
 		break;
+	case BLOCK:
+		pid = atoi(input + 8);
+		printf("\ninput pid : %d",pid);
+		if(pid < NR_TASKS)
+		{
+			printf("\nSystem Task cannot be blocked by users.");
+			break;
+		}
+		proc_table[pid].priority = -1;
+		printf("\nprocess %d has been blocked.",pid);
+		break;
+	case ACTIVATE:
+		pid = atoi(input + 8);
+		printf("\ninput pid : %d",pid);
+		if(pid < NR_TASKS)
+		{
+			printf("\nSystem Task cannot be activated by users.");
+			break;
+		}
+		proc_table[pid].priority = 0;
+		printf("\nprocess %d has been activated.",pid);
 	default:
-		printf("manage process failed");
+		printf("\nmanage process failed. parameters error.");
 	}
 }
 
@@ -144,6 +179,8 @@ PRIVATE int compareAndDo(char* input,SHELLINFO* info)
 			printf(" . . . . . . .| correct last input error\n");
 			print_color_str(info->tty->p_console,"game",GREEN_CHAR);
 			printf(" . . . . . . | to play 2048 game\n");
+			print_color_str(info->tty->p_console,"shutdown",GREEN_CHAR);
+			printf(" . . . . | to exit\n");
 			break;
 		}
 		if(strcmp(info->currentOrder,PROC) == 1)
@@ -180,6 +217,17 @@ PRIVATE int compareAndDo(char* input,SHELLINFO* info)
 			}
 			break;
 		}
+		if(strcmp(info->currentOrder,SHUTDOWN) == 1)
+		{
+			printf("\nPOI OS is shutting down...");
+			delay(100);
+			clear_screen(info->tty->p_console);
+			clear_init_screen(info->tty->p_console);
+			disable_int();
+			for(int i = 0;i < NR_IRQ;i++)
+				disable_irq(i);
+			break;
+		}
 		//未匹配到的指令
 		if(strcmp(info->currentOrder,POI) == 1)
 		{
@@ -208,12 +256,12 @@ PRIVATE void init_info(SHELLINFO* info)
 {
 	info->ifError = 0;
 	strcpy(info->allOrder[0],GIRL);
-	printf("!!%d",strlen(info->allOrder[0]));
 	strcpy(info->allOrder[1],HELP);
 	strcpy(info->allOrder[2],CLEAR);
 	strcpy(info->allOrder[3],PROC);
 	strcpy(info->allOrder[4],POI);
 	strcpy(info->allOrder[5],GAME);
+	strcpy(info->allOrder[6],SHUTDOWN);
 }
 
 PUBLIC void task_shell()

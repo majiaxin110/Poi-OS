@@ -150,7 +150,7 @@ PRIVATE int tryMove(int direc,GDATA* data)
 
         break;
     default:
-        printf("move error!");
+        printf("move error!\n");
         break;
     }
 
