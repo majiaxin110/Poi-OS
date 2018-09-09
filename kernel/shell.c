@@ -183,6 +183,8 @@ PRIVATE int compareAndDo(char* input,SHELLINFO* info)
 			print_color_str(info->tty->p_console,"game",GREEN_CHAR);
 			print_color_str(info->tty->p_console," [-options]",YELLOW_CHAR);
 			printf("  | to play games\n");
+			print_color_str(info->tty->p_console,"time",GREEN_CHAR);
+			printf(" . . . . . . | to get current rtc time\n");
 			print_color_str(info->tty->p_console,"shutdown",GREEN_CHAR);
 			printf(" . . . . | to exit\n");
 			break;
@@ -263,6 +265,13 @@ PRIVATE int compareAndDo(char* input,SHELLINFO* info)
 				disable_irq(i);
 			break;
 		}
+		if(strcmp(info->currentOrder,TIME_ORDER) == 1)
+		{
+			int value = rtcTime();
+			printf("\nfunc out :%d",value);
+			printf("\ntime infomation in RTC: %x.%x.%x %x:%x\n",timeData->year,timeData->month,timeData->day,timeData->hour,timeData->minute);
+			break;
+		}
 		//未匹配到的指令
 		if(strcmp(info->currentOrder,POI) == 1)
 		{
@@ -297,6 +306,7 @@ PRIVATE void init_info(SHELLINFO* info)
 	strcpy(info->allOrder[4],POI);
 	strcpy(info->allOrder[5],GAME);
 	strcpy(info->allOrder[6],SHUTDOWN);
+	strcpy(info->allOrder[7],TIME_ORDER);
 }
 
 PUBLIC void task_shell()

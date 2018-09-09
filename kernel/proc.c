@@ -607,22 +607,33 @@ PUBLIC int strcmp(char* str1,char* str2)
 	return 1;
 }
 
-PUBLIC int sys_getSecond()
+
+PUBLIC int sys_getTime()
 {
-	int value;
+	// do
+	// {
+	// 	value = 0x0a;
+	// 	value = value | 0x80;
+	// 	out_byte(0x70,value);
+	// 	value = in_byte(0x71);
+	// }while(value & 0x80 != 0);
+	// value = 2;
+	// value = value | 0x80;
+	// out_byte(0x70,value);
+	// value = in_byte(0x71);
+	// out_byte(0x70,0);
+	// value<<28;
+	// value>>28;
+	disable_int();
 	do
-	{
-		value = 0x0a;
-		value = value | 0x80;
-		out_byte(0x70,value);
-		value = in_byte(0x71);
-	}while(value & 0x80 != 0);
-	value = 2;
-	value = value | 0x80;
-	out_byte(0x70,value);
-	value = in_byte(0x71);
-	out_byte(0x70,0);
-	value<<28;
-	value>>28;
-	return value;
+	{	timeData->year =   CMOS_READ(0x09) + CMOS_READ(0x32) * 0x100;
+		timeData->month =  CMOS_READ(0x08);
+		timeData->day =    CMOS_READ(0x07);	
+		timeData->hour =   CMOS_READ(0x04);	
+		timeData->minute = CMOS_READ(0x02);
+	}while(timeData->minute != CMOS_READ(0x02));
+	
+	out_byte(0x70,0x00);
+	enable_int();
+	return 35;
 }

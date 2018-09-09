@@ -2,11 +2,11 @@
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                             type.h
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-                                                    Forrest Yu, 2005
+                                     Forrest Yu, 2005	Poi OS 2018
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
-#ifndef	_ORANGES_TYPE_H_
-#define	_ORANGES_TYPE_H_
+#ifndef	_POI_TYPE_H_
+#define	_POI_TYPE_H_
 
 
 typedef	unsigned long long	u64;
@@ -58,5 +58,13 @@ typedef struct {
 	} u;
 } MESSAGE;
 
+//以下为Poi OS 原创内容
+typedef struct time_rtc_info {
+	int year;
+	int month;
+	int day;
+	int hour;
+	int minute;
+} RTCTIME;
 
-#endif /* _ORANGES_TYPE_H_ */
+#endif /* _POI_TYPE_H_ */

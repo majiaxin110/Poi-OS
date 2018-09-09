@@ -106,7 +106,7 @@ PUBLIC void spinProc(char * proc_name);
 /* proc.c */
 PUBLIC	int	sys_sendrec(int function, int src_dest, MESSAGE* m, struct proc* p);
 PUBLIC	int	sys_printx(int _unused1, int _unused2, char* s, struct proc * p_proc);
-PUBLIC int sys_getSecond();
+PUBLIC int sys_getTime();
 /* syscall.asm */
 PUBLIC  void    sys_call();             /* int_handler */
 

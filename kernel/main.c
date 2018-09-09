@@ -142,11 +142,11 @@ void TestA()
 void TestB()
 {
 	delay(3);
-	// int l;
+	// int l = 3;
 	// while(1)
 	// {
-	// 	l = rtcSecond();
-	// 	printf("!!## %d  ",l);
+	// 	l = rtcSecond(&l);
+	// 	printf("!!## %x  ",l);
 	// 	delay(50);
 	// }
 	spin("B");

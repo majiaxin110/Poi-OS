@@ -80,6 +80,13 @@ struct task {
 #define FIRST_PROC	proc_table[0]
 #define LAST_PROC	proc_table[NR_TASKS + NR_PROCS - 1]
 
+//CMOS RTC time
+#define CMOS_READ(addr) ({\
+	out_byte(0x70,0x80|addr);\
+	in_byte(0x71);\
+	})
+
+
 /* stacks of tasks */
 #define STACK_SIZE_TTY		0x8000
 #define STACK_SIZE_SYS		0x8000
