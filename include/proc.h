@@ -63,6 +63,9 @@ struct proc {
 				    * queue (q_sending)
 				    */
 
+	struct proc * next_proc;	//就绪队列中的下一个进程
+	int already_run_for;		//该进程已经消耗的时间片
+
 	int nr_tty;
 };
 

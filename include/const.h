@@ -185,4 +185,9 @@ enum msgtype {
 //SHELL传递给TTY要做的事情
 #define TTY_DO_CLEAR -1
 #define TTY_DO_INDEX -2
+
+//YH
+#define True 	1
+#define False 	0
+#define NULL ((void *)0)
 #endif /* _ORANGES_CONST_H_ */

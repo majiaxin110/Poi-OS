@@ -74,6 +74,9 @@ PUBLIC int kernel_main()
 
 		p_proc->nr_tty		= 0;
 
+		p_proc->already_run_for = 0;
+		p_proc->next_proc = NULL;
+
 		p_proc->p_flags = 0;
 		p_proc->p_msg = 0;
 		p_proc->p_recvfrom = NO_TASK;
@@ -101,8 +104,10 @@ PUBLIC int kernel_main()
 	ticks = 0;
 
 	p_proc_ready	= proc_table;
+	init_schedule_queue();
 	init_clock();
     init_keyboard();
+	
 
 	restart();
 	while(1){}
