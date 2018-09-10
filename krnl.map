@@ -3,6 +3,7 @@
 公共符号            大小              文件
 
 idt_ptr             0x6               kernel/global.o
+Queue2              0xc               kernel/proc.o
 task_stack          0x48000           kernel/global.o
 k_reenter           0x4               kernel/global.o
 gdt                 0x400             kernel/global.o
@@ -22,8 +23,10 @@ idt                 0x800             kernel/global.o
 ticks               0x4               kernel/global.o
 ifDebug             0x4               kernel/start.o
 console_table       0x30              kernel/global.o
+Queue1              0xc               kernel/proc.o
 irq_table           0x40              kernel/global.o
 p_proc_ready        0x4               kernel/global.o
+
 proc_table          0x558             kernel/global.o
 timeData            0x4               kernel/start.o
 
@@ -85,6 +88,8 @@ timeData            0x4               kernel/start.o
  .group         0x0000000000000000        0x8 kernel/proc.o
  .text.__x86.get_pc_thunk.ax
                 0x0000000000000000        0x4 kernel/proc.o
+ .text.__x86.get_pc_thunk.cx
+                0x0000000000000000        0x4 kernel/proc.o
  .text.__x86.get_pc_thunk.bx
                 0x0000000000000000        0x4 kernel/proc.o
  .note.GNU-stack
@@ -107,8 +112,6 @@ timeData            0x4               kernel/start.o
  .group         0x0000000000000000        0x8 kernel/game.o
  .group         0x0000000000000000        0x8 kernel/game.o
  .text.__x86.get_pc_thunk.ax
-                0x0000000000000000        0x4 kernel/game.o
- .text.__x86.get_pc_thunk.dx
                 0x0000000000000000        0x4 kernel/game.o
  .text.__x86.get_pc_thunk.bx
                 0x0000000000000000        0x4 kernel/game.o
@@ -242,6 +245,7 @@ LOAD lib/misc.o
  *(.plt.sec)
 
 .text           0x0000000000030400     0x736b
+
  *(.text.unlikely .text.*_unlikely .text.unlikely.*)
  *(.text.exit .text.exit.*)
  *(.text.startup .text.startup.*)
@@ -293,6 +297,7 @@ LOAD lib/misc.o
  .text.__x86.get_pc_thunk.bx
                 0x000000000003080b        0x4 kernel/start.o
                 0x000000000003080b                __x86.get_pc_thunk.bx
+
  .text          0x000000000003080f      0x59c kernel/main.o
                 0x000000000003080f                kernel_main
                 0x0000000000030c12                get_ticks
@@ -408,6 +413,7 @@ LOAD lib/misc.o
                 [!provide]                        PROVIDE (_etext = .)
                 [!provide]                        PROVIDE (etext = .)
 
+
 .rodata         0x0000000000037780     0x142d
  *(.rodata .rodata.* .gnu.linkonce.r.*)
  .rodata        0x0000000000037780       0x47 kernel/start.o
@@ -432,6 +438,7 @@ LOAD lib/misc.o
 .eh_frame_hdr
  *(.eh_frame_hdr)
  *(.eh_frame_entry .eh_frame_entry.*)
+
 
 .eh_frame       0x0000000000038bb0      0xcb0
  *(.eh_frame)
@@ -465,6 +472,7 @@ LOAD lib/misc.o
  .eh_frame      0x00000000000397a0       0x64 lib/klib.o
                                          0xa4 (松开之前的大小)
  .eh_frame      0x0000000000039804       0x5c lib/misc.o
+
                                          0x9c (松开之前的大小)
  *(.eh_frame.*)
 
@@ -588,7 +596,9 @@ LOAD lib/misc.o
                 0x000000000003b7cc                . = .
                 0x000000000003b7cc                __bss_start = .
 
+
 .bss            0x000000000003b7e0    0x4b458
+
  *(.dynbss)
  *(.bss .bss.* .gnu.linkonce.b.*)
  .bss           0x000000000003b7e0      0x800 kernel/kernel.o
@@ -601,6 +611,7 @@ LOAD lib/misc.o
  .bss           0x000000000003c038        0x0 kernel/i8259.o
  .bss           0x000000000003c038        0x0 kernel/global.o
  .bss           0x000000000003c038        0x0 kernel/protect.o
+
  .bss           0x000000000003c038        0x0 kernel/proc.o
  .bss           0x000000000003c038        0x0 kernel/systask.o
  .bss           0x000000000003c038        0x0 kernel/shell.o
@@ -645,6 +656,7 @@ LOAD lib/misc.o
                 0x0000000000086c38                _end = .
                 [!provide]                        PROVIDE (end = .)
                 0x0000000000086c38                . = DATA_SEGMENT_END (.)
+
 
 .stab
  *(.stab)

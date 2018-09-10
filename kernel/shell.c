@@ -355,6 +355,7 @@ PUBLIC void task_shell()
 		strcpy(msg.INSSM,"");
 		reset_msg(&msg);
 		msg.type = outType;
+		
 		send_recv(SEND,TASK_TTY,&msg);
 	}
 }
