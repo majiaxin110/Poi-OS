@@ -185,8 +185,8 @@ PUBLIC void mqs_schedule()
 			if(fcfsHead == i)//在队头的情况
 			{
 				fcfsHead = proc_queueB[i];
-				print_color_str(&(console_table[0]),"!!| ",RED_CHAR);
-				out_char(&(console_table[0]),'0' + fcfsHead);
+				// print_color_str(&(console_table[0]),"!!| ",RED_CHAR);
+				// out_char(&(console_table[0]),'0' + fcfsHead);
 				proc_queueB[i] = OUT_QUEUE;
 			}
 			else
