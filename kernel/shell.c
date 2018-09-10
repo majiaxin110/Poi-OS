@@ -123,7 +123,7 @@ PRIVATE void processInputError(SHELLINFO* info)
 {
 	printf("\n");
 	print_color_str(info->tty->p_console,"Undefined Command.",YRED_CHAR);
-
+	printf("\n");
 	int distance = 0;
 	int minDistance = 65536;
 	int goalOrder = -1;
@@ -191,6 +191,9 @@ PRIVATE int compareAndDo(char* input,SHELLINFO* info)
 			printf(" . . . . . . | to get current rtc time\n");
 			print_color_str(info->tty->p_console,"debug",GREEN_CHAR);
 			printf(" . . . . . .| to switch debug mode\n");
+			print_color_str(info->tty->p_console,"sche",GREEN_CHAR);
+			print_color_str(info->tty->p_console," [-options]",YELLOW_CHAR);
+			printf("  | to switch debug mode\n");
 			print_color_str(info->tty->p_console,"shutdown",GREEN_CHAR);
 			printf(" . . . . | to exit\n");
 			break;
@@ -284,11 +287,10 @@ PRIVATE int compareAndDo(char* input,SHELLINFO* info)
 			printf("now debug switch is %d",ifDebug);
 			break;
 		}
-		if(strcmp(info->currentOrder,"fuck\0") == 1)
+		if(strcmp(info->currentOrder,SCHEDULE) == 1)
 		{
-			printf("\n");
-			for(int i=0 ;i<NR_PROCS + NR_TASKS;i++)
-				printf(" |%d %d|",proc_queueA[i],proc_queueB[i]);
+			whichSchedule = input[8] - '0';
+			printf("\n Schedule Algorithm has switched.\n");
 			break;
 		}
 		//未匹配到的指令
@@ -326,6 +328,7 @@ PRIVATE void init_info(SHELLINFO* info)
 	strcpy(info->allOrder[5],GAME);
 	strcpy(info->allOrder[6],SHUTDOWN);
 	strcpy(info->allOrder[7],TIME_ORDER);
+	strcpy(info->allOrder[8],SCHEDULE);
 }
 
 PUBLIC void task_shell()

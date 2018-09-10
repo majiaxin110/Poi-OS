@@ -20,11 +20,18 @@
 /*======================================================================*
                             kernel_main
  *======================================================================*/
+
+
 PUBLIC int kernel_main()
 {
 	disp_str("-----\"kernel_main\" begins-----\n");
 	changeProAFlag = changeProBFlag = 0;
 	ifDebug = 0;
+	whichSchedule = 0;
+	p_schedule[0] = rr_schedule;
+	p_schedule[1] = mqs_schedule;
+	p_schedule[2] = mrc_schedule;
+
 	struct task* p_task;
 	struct proc* p_proc= proc_table;
 	char* p_task_stack = task_stack + STACK_SIZE_TOTAL;

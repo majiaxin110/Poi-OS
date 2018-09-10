@@ -33,7 +33,7 @@ PUBLIC void clock_handler(int irq)
 	// 	return;
 	// }
 
-	schedule();
+	p_schedule[whichSchedule]();
 
 }
 

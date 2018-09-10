@@ -46,3 +46,7 @@ extern  CONSOLE		console_table[];
  PUBLIC int ifDebug;
  PUBLIC int fcfsHead;
  PUBLIC int fcfsTail;
+
+ PUBLIC int whichSchedule;
+
+ void (*p_schedule[NR_SCHEDULE])();

@@ -4,7 +4,9 @@
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                                                     Forrest Yu, 2005
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-
+PUBLIC void rr_schedule();
+PUBLIC void mrc_schedule();
+PUBLIC void mqs_schedule();
 
 struct stackframe {	/* proc_ptr points here				pr↑ Low			*/
 	u32	gs;		/* ┓						│			*/

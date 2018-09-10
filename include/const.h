@@ -166,7 +166,7 @@ enum msgtype {
 #define INSSM		u.m3.m3p1
 #define INTTY		u.m3.m3p2
 
-#define NR_ORDERS	8
+#define NR_ORDERS	9
 //内置命令请放在这里
 #define GIRL "mostlovelygirl\0"
 #define HELP "help\0"
@@ -177,6 +177,7 @@ enum msgtype {
 #define SHUTDOWN "shutdown\0"
 #define TIME_ORDER "time\0"
 #define IFDEBUG "debug\0"
+#define SCHEDULE "sche\0"
 
 //进程管理各选项
 #define LIST_ALL 'l'
@@ -192,4 +193,6 @@ enum msgtype {
 #define True 	1
 #define False 	0
 #define NULL ((void *)0)
+
+#define NR_SCHEDULE 3
 #endif /* _ORANGES_CONST_H_ */

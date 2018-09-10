@@ -95,7 +95,7 @@ PUBLIC void init_schedule_queue()
 	}
 }
 
-PUBLIC void schedule()
+PUBLIC void mqs_schedule()
 {
 
 	struct proc*	p;
@@ -355,7 +355,7 @@ PUBLIC void schedule()
 
 }
 
-void mrc_schedule()
+PUBLIC void mrc_schedule()
   {
   struct proc* current = Queue1.linked_PCB;
 	struct proc* p_temp = p_proc_ready;
@@ -536,6 +536,22 @@ void mrc_schedule()
 	}
 
 	int	greatest_ticks = 0;
+	
+	while (!greatest_ticks) {
+		for (p = &FIRST_PROC; p <= &LAST_PROC; p++) {
+			if (p->p_flags == 0) {
+				if (p->ticks > greatest_ticks) {
+					greatest_ticks = p->ticks;
+					p_proc_ready = p;
+				}
+			}
+		}
+
+		if (!greatest_ticks)
+			for (p = &FIRST_PROC; p <= &LAST_PROC; p++)
+				if (p->p_flags == 0)
+					p->ticks = p->priority;
+	}
   	int all_done = True;
 
 	for(i = 0; i < NR_PROCS + NR_TASKS; i++){
@@ -557,6 +573,27 @@ void mrc_schedule()
 	}
   }
 
+PUBLIC void rr_schedule()
+{
+	struct proc*	p;
+	int		greatest_ticks = 0;
+
+	while (!greatest_ticks) {
+		for (p = &FIRST_PROC; p <= &LAST_PROC; p++) {
+			if (p->p_flags == 0) {
+				if (p->ticks > greatest_ticks) {
+					greatest_ticks = p->ticks;
+					p_proc_ready = p;
+				}
+			}
+		}
+
+		if (!greatest_ticks)
+			for (p = &FIRST_PROC; p <= &LAST_PROC; p++)
+				if (p->p_flags == 0)
+					p->ticks = p->priority;
+	}
+}
 /*****************************************************************************
  *                                sys_sendrec
  *****************************************************************************/
@@ -722,7 +759,7 @@ PRIVATE void block(struct proc* p)
 {
 	assert(p->p_flags);
 	block_schedule = 1;
-	schedule();
+	p_schedule[whichSchedule]();
 	block_schedule = 0;
 }
 
