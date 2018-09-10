@@ -32,7 +32,7 @@ PRIVATE int atoi(char* str)
 
 PUBLIC void print_welcome()
 {
-	printf("Shell is running..\n--------");
+	printf("Shell is running..\n");
 
 // open OS animation
 	int i = 8;
@@ -210,7 +210,7 @@ PUBLIC void print_welcome()
 		clear_screen(&(console_table[0]));
 		--i;
 	}
-
+	printf("--------");
 	print_color_str(&(console_table[0])," Welcome to Poi OS ",YELLOW_CHAR);
 	printf("--------\n");
 	delay(5);
@@ -373,7 +373,7 @@ PRIVATE int compareAndDo(char* input,SHELLINFO* info)
 			printf(" . . . . . .| to switch debug mode\n");
 			print_color_str(info->tty->p_console,"sche",GREEN_CHAR);
 			print_color_str(info->tty->p_console," [-options]",YELLOW_CHAR);
-			printf("  | to switch debug mode\n");
+			printf("  | to switch schedule mode\n");
 			print_color_str(info->tty->p_console,"shutdown",GREEN_CHAR);
 			printf(" . . . . | to exit\n");
 			break;

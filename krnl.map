@@ -246,7 +246,7 @@ LOAD lib/misc.o
 .plt.sec
  *(.plt.sec)
 
-.text           0x0000000000030400     0x8aab
+.text           0x0000000000030400     0x8abb
  *(.text.unlikely .text.*_unlikely .text.unlikely.*)
  *(.text.exit .text.exit.*)
  *(.text.startup .text.startup.*)
@@ -362,54 +362,53 @@ LOAD lib/misc.o
                 0x000000000003558d                sys_getTime
  .text          0x0000000000035708       0x69 kernel/systask.o
                 0x0000000000035708                task_sys
- .text          0x0000000000035771     0x1ec0 kernel/shell.o
+ .text          0x0000000000035771     0x1ed2 kernel/shell.o
                 0x00000000000357f4                print_welcome
-                0x0000000000037522                task_shell
- .text          0x0000000000037631     0x10e6 kernel/game.o
-                0x0000000000037631                doRand
-                0x00000000000380f4                Gpow
-                0x0000000000038298                Gticks
-                0x000000000003864b                get_game_ticks
-                0x0000000000038680                task_tick
+                0x0000000000037534                task_shell
+ .text          0x0000000000037643     0x10e6 kernel/game.o
+                0x0000000000037643                doRand
+                0x0000000000038106                Gpow
+                0x00000000000382aa                Gticks
+                0x000000000003865d                get_game_ticks
+                0x0000000000038692                task_tick
  .text.__x86.get_pc_thunk.dx
-                0x0000000000038717        0x4 kernel/game.o
-                0x0000000000038717                __x86.get_pc_thunk.dx
+                0x0000000000038729        0x4 kernel/game.o
+                0x0000000000038729                __x86.get_pc_thunk.dx
  .text.__x86.get_pc_thunk.si
-                0x000000000003871b        0x4 kernel/game.o
-                0x000000000003871b                __x86.get_pc_thunk.si
- .text          0x000000000003871f       0x5f kernel/printf.o
-                0x000000000003871f                printf
- .text          0x000000000003877e      0x330 kernel/vsprintf.o
-                0x00000000000387ee                vsprintf
-                0x0000000000038a7e                sprintf
- *fill*         0x0000000000038aae        0x2 
- .text          0x0000000000038ab0      0x141 lib/kliba.o
-                0x0000000000038ab0                disp_str
-                0x0000000000038af6                disp_color_str
-                0x0000000000038b35                out_byte
-                0x0000000000038b41                in_byte
-                0x0000000000038b4b                disable_irq
-                0x0000000000038b80                enable_irq
-                0x0000000000038b9f                disable_int
-                0x0000000000038ba1                enable_int
-                0x0000000000038ba3                generate_music
- .text          0x0000000000038bf1      0x13c lib/klib.o
-                0x0000000000038bf1                itoa
-                0x0000000000038ca6                disp_int
-                0x0000000000038cdc                delay
- *fill*         0x0000000000038d2d        0x3 
- .text          0x0000000000038d30       0xdb lib/string.o
-                0x0000000000038d30                memcpy
-                0x0000000000038d59                memset
-                0x0000000000038d7a                strcpy
-                0x0000000000038d92                strcatch
-                0x0000000000038db6                strcat
-                0x0000000000038dda                strdel
-                0x0000000000038df5                strlen
- .text          0x0000000000038e0b       0xa0 lib/misc.o
-                0x0000000000038e0b                spin
-                0x0000000000038e35                spinProc
-                0x0000000000038e5f                assertion_failure
+                0x000000000003872d        0x4 kernel/game.o
+                0x000000000003872d                __x86.get_pc_thunk.si
+ .text          0x0000000000038731       0x5f kernel/printf.o
+                0x0000000000038731                printf
+ .text          0x0000000000038790      0x330 kernel/vsprintf.o
+                0x0000000000038800                vsprintf
+                0x0000000000038a90                sprintf
+ .text          0x0000000000038ac0      0x141 lib/kliba.o
+                0x0000000000038ac0                disp_str
+                0x0000000000038b06                disp_color_str
+                0x0000000000038b45                out_byte
+                0x0000000000038b51                in_byte
+                0x0000000000038b5b                disable_irq
+                0x0000000000038b90                enable_irq
+                0x0000000000038baf                disable_int
+                0x0000000000038bb1                enable_int
+                0x0000000000038bb3                generate_music
+ .text          0x0000000000038c01      0x13c lib/klib.o
+                0x0000000000038c01                itoa
+                0x0000000000038cb6                disp_int
+                0x0000000000038cec                delay
+ *fill*         0x0000000000038d3d        0x3 
+ .text          0x0000000000038d40       0xdb lib/string.o
+                0x0000000000038d40                memcpy
+                0x0000000000038d69                memset
+                0x0000000000038d8a                strcpy
+                0x0000000000038da2                strcatch
+                0x0000000000038dc6                strcat
+                0x0000000000038dea                strdel
+                0x0000000000038e05                strlen
+ .text          0x0000000000038e1b       0xa0 lib/misc.o
+                0x0000000000038e1b                spin
+                0x0000000000038e45                spinProc
+                0x0000000000038e6f                assertion_failure
  *(.gnu.warning)
 
 .fini
