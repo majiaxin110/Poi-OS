@@ -84,7 +84,7 @@ PUBLIC void in_process(TTY* p_tty, u32 key)
 	reset_msg(&msg);
 	//msg.source = TASK_TTY;
         if (!(key & FLAG_EXT)) {
-			strcatch(p_tty->currentInput,&key);
+			// strcatch(p_tty->currentInput,&key);
 			put_key(p_tty, key);
         }
         else {
@@ -194,6 +194,8 @@ PRIVATE void tty_do_write(TTY* p_tty)
 		}
 		p_tty->inbuf_count--;
 
+		if(ch != '\n' && ch != '\b')
+			strcatch(p_tty->currentInput,&ch);
 		out_char(p_tty->p_console, ch);
 	}
 }

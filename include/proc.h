@@ -80,8 +80,17 @@ struct task {
 /* Number of tasks & procs */
 #define NR_TASKS	6
 #define NR_PROCS	3
+#define NR_APROCQUEUE 1 //第一级用户进程队列中进程数量
+
 #define FIRST_PROC	proc_table[0]
 #define LAST_PROC	proc_table[NR_TASKS + NR_PROCS - 1]
+
+//CMOS RTC time
+#define CMOS_READ(addr) ({\
+	out_byte(0x70,0x80|addr);\
+	in_byte(0x71);\
+	})
+
 
 /* stacks of tasks */
 #define STACK_SIZE_TTY		0x8000

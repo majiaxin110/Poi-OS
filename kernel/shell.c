@@ -80,6 +80,8 @@ PRIVATE void manageProcess(char* input)
 		}	
 		for(int i=0;i<NR_PROCS;i++)
 		{
+			if(proc_table[i+NR_TASKS].p_flags != 0)
+				continue;
 			nameLen = strlen(proc_table[i+NR_TASKS].name);
 			printf("\nprocess: %s ",proc_table[i+NR_TASKS].name);
 			for(int j=0;j<6-nameLen;j++)
@@ -97,8 +99,9 @@ PRIVATE void manageProcess(char* input)
 			printf("\nSystem Task cannot be blocked by users.");
 			break;
 		}
-		proc_table[pid].priority = -1;
-		printf("\nprocess %d has been blocked.",pid);
+		proc_table[pid].p_flags = -1;
+		proc_table[pid].ticks = 0;
+		printf("\nprocess %d has been killed.",pid);
 		break;
 	case ACTIVATE:
 		pid = atoi(input + 8);
@@ -108,8 +111,9 @@ PRIVATE void manageProcess(char* input)
 			printf("\nSystem Task cannot be activated by users.");
 			break;
 		}
-		proc_table[pid].priority = 0;
+		proc_table[pid].p_flags = 0;
 		printf("\nprocess %d has been activated.",pid);
+		break;
 	default:
 		printf("\nmanage process failed. parameters error.");
 	}
@@ -183,6 +187,10 @@ PRIVATE int compareAndDo(char* input,SHELLINFO* info)
 			print_color_str(info->tty->p_console,"game",GREEN_CHAR);
 			print_color_str(info->tty->p_console," [-options]",YELLOW_CHAR);
 			printf("  | to play games\n");
+			print_color_str(info->tty->p_console,"time",GREEN_CHAR);
+			printf(" . . . . . . | to get current rtc time\n");
+			print_color_str(info->tty->p_console,"debug",GREEN_CHAR);
+			printf(" . . . . . .| to switch debug mode\n");
 			print_color_str(info->tty->p_console,"shutdown",GREEN_CHAR);
 			printf(" . . . . | to exit\n");
 			break;
@@ -263,6 +271,26 @@ PRIVATE int compareAndDo(char* input,SHELLINFO* info)
 				disable_irq(i);
 			break;
 		}
+		if(strcmp(info->currentOrder,TIME_ORDER) == 1)
+		{
+			int value = rtcTime();
+			printf("\nfunc out :%d",value);
+			printf("\ntime infomation in RTC: %x.%x.%x %x:%x\n",timeData->year,timeData->month,timeData->day,timeData->hour,timeData->minute);
+			break;
+		}
+		if(strcmp(info->currentOrder,IFDEBUG) == 1)
+		{
+			ifDebug = (ifDebug == 1) ? 0:1;
+			printf("now debug switch is %d",ifDebug);
+			break;
+		}
+		if(strcmp(info->currentOrder,"fuck\0") == 1)
+		{
+			printf("\n");
+			for(int i=0 ;i<NR_PROCS + NR_TASKS;i++)
+				printf(" |%d %d|",proc_queueA[i],proc_queueB[i]);
+			break;
+		}
 		//未匹配到的指令
 		if(strcmp(info->currentOrder,POI) == 1)
 		{
@@ -297,6 +325,7 @@ PRIVATE void init_info(SHELLINFO* info)
 	strcpy(info->allOrder[4],POI);
 	strcpy(info->allOrder[5],GAME);
 	strcpy(info->allOrder[6],SHUTDOWN);
+	strcpy(info->allOrder[7],TIME_ORDER);
 }
 
 PUBLIC void task_shell()

@@ -34,3 +34,15 @@ extern	irq_handler	irq_table[];
 extern	TTY		tty_table[];
 extern  CONSOLE		console_table[];
 
+ RTCTIME* timeData;
+
+ PUBLIC 	int 		proc_queueA[NR_PROCS + NR_TASKS];
+ PUBLIC 	int 		proc_queueB[NR_PROCS + NR_TASKS];
+ PUBLIC 	int 		task_queue[NR_PROCS + NR_TASKS];
+
+ PUBLIC int changeProAFlag;
+  PUBLIC int changeProBFlag;
+
+ PUBLIC int ifDebug;
+ PUBLIC int fcfsHead;
+ PUBLIC int fcfsTail;
