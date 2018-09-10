@@ -176,6 +176,7 @@ enum msgtype {
 #define POI "poi\0"
 #define SHUTDOWN "shutdown\0"
 #define TIME_ORDER "time\0"
+#define IFDEBUG "debug\0"
 
 //进程管理各选项
 #define LIST_ALL 'l'

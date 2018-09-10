@@ -77,6 +77,8 @@ struct task {
 /* Number of tasks & procs */
 #define NR_TASKS	6
 #define NR_PROCS	3
+#define NR_APROCQUEUE 1 //第一级用户进程队列中进程数量
+
 #define FIRST_PROC	proc_table[0]
 #define LAST_PROC	proc_table[NR_TASKS + NR_PROCS - 1]
 

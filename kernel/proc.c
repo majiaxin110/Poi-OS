@@ -15,6 +15,8 @@
 #include "global.h"
 #include "proto.h"
 
+#define OUT_QUEUE -100
+
 PRIVATE void block(struct proc* p);
 PRIVATE void unblock(struct proc* p);
 PRIVATE int  msg_send(struct proc* current, int dest, MESSAGE* m);
@@ -32,21 +34,255 @@ PUBLIC void schedule()
 {
 	struct proc*	p;
 	int		greatest_ticks = 0;
+	int flags = 0;
+	//分别处理三个队列
+	//任务队列
+	for(int i=0;i < NR_TASKS;i++)
+	{
+		if(proc_table[i].p_flags != 0 && task_queue[i] != OUT_QUEUE)
+		//移出队列
+		{
+			for(int j=0;j<NR_TASKS + NR_PROCS;j++)
+			{
+				if(task_queue[j] == i)
+				{
+					task_queue[j] = task_queue[i];
+					if(ifDebug == 1)
+					{
+						print_color_str(&(console_table[0]),"REMOVE:",YELLOW_CHAR);
+						out_char(&(console_table[0]),'0' + i);
+						print_color_str(&(console_table[0]),"FROM:",RED_CHAR);
+						out_char(&(console_table[0]),'0' + j);
+					}
+					
+					break;
+				}
+			}
+			task_queue[i] = OUT_QUEUE;
+			
+		}
+		if(proc_table[i].p_flags == 0 && task_queue[i] < 0)
+		//加入队列
+		{
+			for(int j=0;j<NR_TASKS + NR_PROCS;j++)
+			{
+				if(task_queue[j] != OUT_QUEUE)
+				{
+					task_queue[i] = task_queue[j];
+					flags = 1;
+					task_queue[j] = i;
+					break;
+				}
+			}
+			if(!flags)
+				task_queue[i] = 0;
+			flags = 0;
+			if(ifDebug == 1)
+			{
+				print_color_str(&(console_table[0]),"ADD:",BLUE_CHAR);
+				out_char(&(console_table[0]),'0' + i);
+			}
+				
+		}
+	}
+	//队列2,队列2目前固定只有一个进程
+	if(proc_table[NR_TASKS].p_flags != 0)
+	{
+		proc_queueA[NR_TASKS] = OUT_QUEUE;
+		if(fcfsHead == NR_TASKS)
+			fcfsHead = proc_queueA[NR_TASKS];
+	}	
+	if(proc_table[NR_TASKS].p_flags == 0)
+		proc_queueA[NR_TASKS] = 0;
+	//队列3
+	for (int i = NR_TASKS+1;i<NR_TASKS + NR_PROCS;i++) 
+	{
+		if(proc_table[i].p_flags != 0 && proc_queueB[i] != OUT_QUEUE)
+		//移出队列
+		{
+			/*for(int j=0;j<NR_TASKS + NR_PROCS;j++)
+			{
+				if(proc_queueB[j] == i)
+				{
+					proc_queueB[j] = proc_queueB[i];
+					if(ifDebug == 1)
+					{
+						print_color_str(&(console_table[0]),"REMOVE:",YELLOW_CHAR);
+						out_char(&(console_table[0]),'0' + i);
+						print_color_str(&(console_table[0]),"FROM:",RED_CHAR);
+						out_char(&(console_table[0]),'0' + j);
+					}
+					break;
+				}
+			}
+			proc_queueB[i] = OUT_QUEUE;*/
+			if(fcfsHead == i)//在队头的情况
+			{
+				fcfsHead = proc_queueB[i];
+				print_color_str(&(console_table[0]),"!!| ",RED_CHAR);
+				out_char(&(console_table[0]),'0' + fcfsHead);
+				proc_queueB[i] = OUT_QUEUE;
+			}
+			else
+			{
+				//在队尾或队中的情况
+				for(int j=NR_TASKS;j<NR_TASKS + NR_PROCS;j++)
+				{
+					if(proc_queueB[j] == i)
+					{					
+						proc_queueB[j] = proc_queueB[i];
+						if(fcfsTail == i)
+							fcfsTail = j;
+						proc_queueB[i] = OUT_QUEUE;
+						break;
+					}else if(j == NR_TASKS + NR_PROCS -1)
+					{
+						//最后一个进程被移除
+						fcfsHead = fcfsTail = OUT_QUEUE;
+						proc_queueB[i] = OUT_QUEUE;
+					}
+				}
+				
+			}
+			
+		}
+		if(proc_table[i].p_flags == 0 && proc_queueB[i] == OUT_QUEUE)
+		//加入队列
+		{
+			/*for(int j=NR_TASKS;j<NR_TASKS + NR_PROCS;j++)
+			{
+				if(proc_queueB[j] != OUT_QUEUE)
+				{
+					proc_queueB[i] = proc_queueB[j];
+					proc_queueB[j] = i;
+					flags = 1;
+					break;
+				}
+			}
+			//当前队列唯一进程
+			if(!flags)
+				proc_queueB[i] = 1;
+			if(ifDebug == 1)
+			{
+				print_color_str(&(console_table[0]),"ADD:",BLUE_CHAR);
+				out_char(&(console_table[0]),'0' + i);
+			}*/
+			if(fcfsTail != OUT_QUEUE)
+			{
+				proc_queueB[fcfsTail] = i;
+				fcfsTail = i;
+			}
+			else
+			{
+				fcfsHead = fcfsTail = OUT_QUEUE;
+			}
+		}
+	}
 
+	// for(int i=0;i<NR_TASKS + NR_PROCS;i++)
+	// {
+	// 	if((proc_queueB[i] != OUT_QUEUE && proc_table[i].p_flags != 0) || proc_queueB[i] >= NR_TASKS + NR_PROCS)
+	// 	{
+	// 		print_color_str(&(console_table[0]),"WARNING:",YELLOW_CHAR);
+	// 		out_char(&(console_table[0]),'0' + i);
+	// 	}
+	// }
+	// while (!greatest_ticks) {
+	// 	for (p = &FIRST_PROC; p <= &LAST_PROC; p++) {
+	// 		if (p->p_flags == 0) {
+	// 			if (p->ticks > greatest_ticks) {
+	// 				greatest_ticks = p->ticks;
+	// 				p_proc_ready = p;
+	// 			}
+	// 		}
+	// 	}
+
+	// 	if (!greatest_ticks)
+	// 		for (p = &FIRST_PROC; p <= &LAST_PROC; p++)
+	// 			if (p->p_flags == 0)
+	// 				p->ticks = p->priority;
+	// }
+	// int k;
+	// while(!greatest_ticks)
+	// {
+	// 	for(int i=0;i<NR_TASKS + NR_PROCS;i++)
+	// 	{
+	// 		if(proc_queue[i] != OUT_QUEUE)
+	// 		{
+	// 			k = i;
+	// 			break;
+	// 		}
+	// 	}
+	// 	for(int i=k;i<9 && proc_queue[i] != OUT_QUEUE;i = proc_queue[i])
+	// 	{
+	// 		if(proc_table[i].ticks > greatest_ticks)
+	// 		{
+	// 			greatest_ticks = proc_table[i].ticks;
+	// 			p_proc_ready = &(proc_table[i]);
+	// 		}
+	// 		if(proc_table[i].p_flags != 0)
+	// 			print_color_str(&(console_table[0]),"WARNING:",YELLOW_CHAR);
+	// 	}
+
+	// 	if(!greatest_ticks)
+	// 	{
+	// 		for(int i=0;i<NR_TASKS + NR_PROCS;i++)
+	// 		{
+	// 			if(proc_queue[i] != OUT_QUEUE)
+	// 			{
+	// 				k = i;
+	// 				break;
+	// 			}
+	// 		}
+	// 		for(int i=k;i<9 && proc_queue[i] != OUT_QUEUE;i = proc_queue[i])
+	// 			proc_table[i].ticks = proc_table[i].priority;
+	// 	}
+	// }
+	int i;
 	while (!greatest_ticks) {
-		for (p = &FIRST_PROC; p <= &LAST_PROC; p++) {
+		for (i=0,p = &FIRST_PROC; p <= &LAST_PROC && i<NR_TASKS + NR_PROCS; p++,i++) {
+			if((i<NR_TASKS && task_queue[i] == OUT_QUEUE) || (i == NR_TASKS && proc_queueA[i] == OUT_QUEUE) 
+				|| (i>NR_TASKS && proc_queueB[i] == OUT_QUEUE) )
+				continue;
 			if (p->p_flags == 0) {
-				if (p->ticks > greatest_ticks) {
+				if (p->ticks > greatest_ticks && i<NR_TASKS) {
 					greatest_ticks = p->ticks;
 					p_proc_ready = p;
 				}
+				if(i<NR_TASKS && greatest_ticks > 0)
+					break;
+				// print_color_str(&(console_table[0]),"ffSuccess",GREEN_CHAR);
+				//进入非任务队列时间
+				//非任务队列采用FCFS
+				//A队列分给应有时间
+				if(i >= NR_TASKS && i<NR_TASKS + NR_APROCQUEUE && changeProAFlag == 0) 
+				{
+					greatest_ticks = p->ticks;
+					p_proc_ready = p;
+					changeProAFlag =1;
+				}
+				//B队列分给应有时间
+				else if(fcfsHead == i && p->ticks != 0 && changeProBFlag == 0)
+				{
+					greatest_ticks = p->ticks;
+					p_proc_ready = p;
+					changeProBFlag = 1;
+				}
+			}
+			else
+			{
+				print_color_str(&(console_table[0]),"WARNING:",YELLOW_CHAR);
+				out_char(&(console_table[0]),'0' + i);
 			}
 		}
-
-		if (!greatest_ticks)
+		if (!greatest_ticks && i>=NR_TASKS)
+		{
 			for (p = &FIRST_PROC; p <= &LAST_PROC; p++)
 				if (p->p_flags == 0)
 					p->ticks = p->priority;
+			changeProAFlag = changeProBFlag = 0;
+		}
+			
 	}
 }
 
